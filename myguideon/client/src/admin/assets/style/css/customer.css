@@ -1,0 +1,95 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
+/* Importer Montserrat directement dans le CSS */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
+
+
+*{
+    font-family: 'poppins';
+}
+
+.css-1umw9bq-MuiSvgIcon-root {
+    font-size: 19px;
+    color:#9fa6ad
+  }
+
+
+  .css-1lwhjos-MuiPaper-root-MuiDrawer-paper{
+    background-color:#0b0d0e
+  }
+
+  li p.css-ff7dcq-JoyTypography-root{
+    color:#9fa6ad;
+  }
+
+  .css-1uw6cuk-MuiListItem-root{
+    margin-bottom:50px
+  }
+
+  li.MuiListItem-root {
+    margin-bottom: 30px;
+  }
+  input.css-16wblaj-MuiInputBase-input-MuiOutlinedInput-input {
+ 
+    padding: 9px;
+  }
+
+
+  
+  .css-w76bbz-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input.MuiSelect-select {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    height: -23px;
+    background-color: white;
+    padding-bottom: 3px;
+  }
+
+  .css-w76bbz-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input.MuiSelect-select  em {
+    font-size:13px
+  }
+
+  html body div#root div.MuiBox-root.css-k008qs main.MuiBox-root.css-514tly div.MuiBox-root.css-0 div.MuiBox-root.css-19kzrtu div.MuiBox-root.css-1i38pre div.MuiFormControl-root.css-zctqko-MuiFormControl-root div.MuiInputBase-root.MuiOutlinedInput-root.MuiInputBase-colorPrimary.MuiInputBase-formControl.css-qwoe52-MuiInputBase-root-MuiOutlinedInput-root-MuiSelect-root,  .css-517yci-MuiInputBase-root-MuiOutlinedInput-root-MuiSelect-root, .css-qwoe52-MuiInputBase-root-MuiOutlinedInput-root-MuiSelect-root {
+
+    border-radius: 4px;
+    max-width: 200px;
+  }
+
+  input{
+    background-color: white;
+  }
+
+  button[class='bg-primary']{
+    background-color:#293746
+  }
+
+
+ 
+ 
+  .active-menu-item {
+    background-color: #84aadc83; /* Couleur de fond pour le menu actif */
+    border-radius: 3px; /* Coins arrondis */
+    color: #fff; /* Couleur du texte actif */
+  }
+  
+  .active-menu-item .MuiListItemIcon-root {
+    color: #fff; /* Icône blanche pour le menu actif */
+  }
+  a {
+    color: rgba(var(--bs-link-color-rgb),var(--bs-link-opacity,1));
+    text-decoration: none;
+  }
+
+  .MuiTabs-scroller.MuiTabs-fixed.css-s2t35c-MuiTabs-scroller{
+    margin-bottom: 30px;
+  }
+
+
+  .css-w76bbz-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input.MuiSelect-select {
+    height: auto;
+    min-height: 1.4375em;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+   
+    color: black;
+  }

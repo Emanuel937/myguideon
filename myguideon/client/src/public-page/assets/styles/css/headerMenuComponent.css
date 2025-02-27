@@ -1,0 +1,160 @@
+/* Logo */
+/* Dans le fichier App.css ou un autre fichier CSS global */
+
+/* Appliquez la police à tout le document */
+
+/* Header Styles */
+body{
+    box-shadow: 0 4px 15px rgba(255, 255, 255, 0.5);
+}
+header {
+    background: #fff;
+    border-bottom: 1.5px solid #d3d3d35e;
+}
+
+nav {
+    display: flex;
+    justify-content: space-between;
+    
+}
+
+.logo {
+    width: 229.67px;
+    height: 64px;
+    padding-left: 35px;
+    padding-top: 16px;
+    display: inline-block;
+    margin-right: 70px;
+}
+
+.logo img {
+    width: 100%;
+}
+
+/* Liste principale */
+.custom-menu-list {
+    list-style: none; /* Supprime les puces de la liste */
+    display: flex; /* Aligne les éléments horizontalement */
+    gap: 20px; /* Espace entre les éléments */
+    padding: 0;
+    justify-content: center; /* Centre horizontalement */
+    align-items: center; /* Centre verticalement */
+    padding-top:10px;
+}
+
+/* Éléments de la liste */
+.custom-menu-item {
+    display: flex;
+    flex-direction: column; /* Empile les enfants verticalement */
+    width: 70px;
+    height: 50px;
+   
+}
+
+/* Image de l'icône */
+.svgIcon {
+    width: 24px; /* Taille de l'icône */
+    height: 24px;
+    margin:auto;
+    margin-bottom: 8px; /* Espace entre l'icône et le texte */
+    
+}
+
+/* Texte sous l'icône */
+.menu-text {
+    height: 20px;
+    font-family: 'Poppins';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 11px;
+    line-height: 20px;
+    /* identical to box height */
+    text-align: center;
+    color: #000000;
+    opacity: 0.6;
+}
+
+/* Effet au survol */
+.custom-menu-item:hover {
+    color: #007bff; /* Change la couleur au survol */
+}
+
+
+.rightMenuItens{
+    margin-top:10px
+}
+
+.customer-search-container{
+    position:relative;
+}
+ input[name='search_destination']{
+  
+    width: 450px;
+    height: 56px;
+    padding: 20px;
+    border-radius: 6px;
+    border:0.5px solid #97979771;
+    background-color: #FFFFFF;
+
+}
+
+
+  input[name='search_destination']::placeholder{
+
+    height: 17px;
+    font-family: 'Montserrat';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 12px;
+    line-height: 17px;
+    /* identical to box height */
+    color: #000000;
+
+    opacity: 0.5;
+
+}
+
+
+.customer-search-container .searchIcon{
+    position: absolute;
+    top: 25%;
+     right: 2%;
+}
+
+.notification {
+    border-radius: 6px;
+    border: 1px solid #F0F0F0;
+    width: 56px;
+    height: 56px;
+    display: flex; /* Utilisation de Flexbox */
+    justify-content: center; /* Centre l'image horizontalement */
+    align-items: center; /* Centre l'image verticalement */
+    text-align: center;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.notification img {
+    width: 25px;
+    height: 28px;
+}
+
+.userAvatar{
+    width:56px ;
+    height:56px ;
+    padding-right: 10px;
+    border-radius: 100%;
+    display: flex;
+    justify-items: center;
+    align-items: center;
+
+}
+
+.userAvatar img{
+    width: 100%;
+}
+
+
+.navigationStyle{
+    padding-top: 18px;
+}

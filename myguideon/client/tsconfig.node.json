@@ -1,0 +1,10 @@
+{
+  "compilerOptions": {
+     "noEmit": false,
+    "noEmitOnError": true,
+  },
+  "composite": true,
+  "include": ["vite.config.ts"],
+
+ 
+}

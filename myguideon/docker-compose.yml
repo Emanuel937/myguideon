@@ -1,0 +1,41 @@
+version: '3.8'
+
+services:
+  front-end:
+    build: ./front-end
+    image: front-end-image
+    ports:
+      - "3000:3000"
+    container_name: front-end-container
+    volumes:
+      - ./front-end:/app
+
+  back-end:
+    build: ./back-end
+    image: back-end-image
+    ports:
+      - "3030:3030"
+    container_name: back-end-container
+    volumes:
+      - ./back-end:/app
+    depends_on:
+      - mysql-service
+    env_file:
+      - .env  
+
+  mysql-service:
+    image: mysql:latest
+    container_name: mysql-container
+    volumes:
+      - mysql_data:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+    ports:
+      - "${MYSQL_PORT}:${MYSQL_PORT}"  # Utilisation du port dans .env
+    restart: always
+
+volumes:
+  mysql_data:

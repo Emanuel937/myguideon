@@ -1,0 +1,488 @@
+:root {
+    --primary-color: #2196f3;
+    --secondary-color: #f5f5f5;
+    --text-color: #333;
+    --border-radius: 16px;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Inter', sans-serif;
+}
+
+body {
+    color: var(--text-color);
+    background-image: url('/public/assets/img/bg.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+    border: 1px solid #00000000;
+
+}
+
+
+.container_home{
+    height: 100%;
+    padding: 20px;
+      padding-right: 20px;
+      padding-left: 20px;
+    padding-left: 20px;
+    padding-right: 30px;
+    background-position-x: -19%;
+    background-repeat: no-repeat;
+    background-size: 400px;
+    background-position-y: 200%;
+    padding-left: 30px;
+    box-shadow: 0 8px 12px 0 rgba( 62.00000010430813, 63.000000044703484, 122.00000032782555, 0.04 );
+    border-radius: 18px;
+}
+
+
+
+.header_title{
+    font-family: 'Montserrat';
+    font-weight: "semibold";
+    font-size: 26px;
+    color: #000000;
+    line-height: auto;
+}
+
+.customer_section.d-flex.justify-content-between{
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+.CustomerActivityBookingMap{
+    width: 297px;
+    border-radius: 6px;
+    position: relative;
+    margin-left: 20px;
+    background-color: white;
+}
+
+.shadow_ {
+    box-shadow: 0 8px 12px 0 rgba(62, 63, 122, 0.0391);
+  }
+
+.CustomerActivityBookingMap:first-child
+{
+    border:1px solid #007BFF;
+}
+
+.CustomerActivityBookingMap
+{
+    border:1px solid #89C947;
+}
+
+.CustomerActivityBookingMap p{
+    text-align: right;
+    font-family: 'Montserrat';
+    font-style: normal;
+    font-weight: 560;
+    font-size: 14px;
+    line-height: 22px;
+    color: #000000;
+    margin-top:10px;
+    margin-right: 8px;
+}
+
+
+.CustomerActivityBookingMap .CustomerActivityBookingMap_img{
+  position: absolute;
+  width: 88px;
+  height: 82px;
+  bottom: -30%;
+  max-width: 100px;
+  max-height: 88px;
+}
+
+.tab p{
+    margin-right: 50px;
+}
+.tab p img{
+    width: 40px;
+    height: 40px;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+.tab .tab_title{
+    font-family: 'Montserrat';
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 27px;
+    color: #394149;
+}
+
+.menu_active {
+    margin-top: 20px;
+    background-color: white;
+    border-top-right-radius: 18px;
+  }
+
+.menu_active .tab{
+    background-color: #F8F8F8;;
+    width: 600px;
+
+    border-top-left-radius: 18px;
+}
+.homeMainContent{
+    background-color: white;
+    height: auto;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+    border-bottom-left-radius: 10px;
+}
+
+.menu_active_tab {
+    background-color: #E3EFFD;
+    border-top-left-radius: 18px;
+    border-bottom-right-radius: 18px;
+  }
+
+.navigation {
+
+  
+        padding: 10px;
+        border-radius: 100%;
+        height: 40px;
+        width: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      
+}
+
+.nativation_container{
+    margin-right: 20px;
+    margin-top:10px
+}
+
+.home_destination_card_container {
+    padding-top: 30px;
+    padding-left: 20px;
+    position: relative;
+    width: 530px;
+    max-width: 530px;
+    overflow: hidden;
+    padding-bottom: 10px;
+    margin-right:20px
+    
+  }
+
+  
+
+
+
+.home_destination_card {
+    border-radius: 18px;
+    box-shadow: 0 3.34px 3.34px 0 rgba(0, 0, 0, 0.1) ;
+    position: relative;
+    height: 250px;
+    width: 100%;
+    background-image: url("http://localhost:3030/public/uploads/destination/gallery/1739465371575-259b3008-f571-4685-a65b-f3a18aa94d26.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+    /*filter: brightness(1) contrast(1.3) saturate(1.2); /* Augmente le contraste et la saturation */
+  
+
+}
+  
+  .home_destination_card::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.14); /* Ombre noire légère */
+    border-radius: 18px;
+  }
+
+.smallQuarePhoto{
+
+        width: 50px;
+        height: 50px;
+        border-radius: 8px;
+        margin-right: 5px;
+        margin-left: 5px;
+        box-shadow: 0 8px 12px 0px rgba(62, 63, 122, 0.0391);
+   
+}
+
+article.absolute_photo {
+    position: absolute;
+    top: 222px;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    left: 0;
+    right: 0;
+}
+
+
+.homeMainYellowContainer{
+    background-image: url('/public/assets/img/small-yellow.png');
+    padding: 5px;
+      padding-top: 5px;
+    border-radius: 30px;
+    width: 80px;
+    text-align: center;
+    color: #296f6c;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    height: 45px;
+    width: 121px;
+    padding-top: 10px;
+
+}
+
+.homeMainYellowContainer span {
+    font-size: 15px;
+    font-weight: bold;
+    margin-left: 5px;
+    color: rgb(2, 95, 128);
+    font-family: "Montserrat";
+  }
+
+.homeMainYellowContainer img{
+    width: 19px;
+}
+
+.homeMainContentTitle{
+
+  font-size: 20px;
+  text-align: center;
+  color: rgba(57, 65, 73, 1);
+  font-family: "Montserrat";
+  font-weight: bold;
+
+}
+
+.homeMainContentTitle {
+    font-size: 20px;
+    text-align: center;
+    color: rgba(57, 65, 73, 1);
+    font-family: "Montserrat";
+    font-weight: bold;
+    padding-top: 10px;
+  }
+
+ .langage_container{
+    background-image: url('/public/assets/img/bg-big.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+}
+
+.budget_container{
+    background-image: url('/public/assets/img/bg-big.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+}
+.meteo_container{
+    border-radius: 20px;
+    width: 100%;
+    padding: 25px;
+    margin-top: 10px;
+    background-size: cover;
+    background-position: center;
+    height: 79px;
+    background-size: cover;
+    background-position: center;
+  
+}
+
+.langage_container{
+    width: 250px;
+  height: 65px;
+  border-radius: 20px;
+ display: flex;
+ align-items: center;
+ padding-left: 10px;
+}
+.budget_container{ 
+  display: flex;
+  align-items: center;
+  width: 100%;
+  margin-top: 8px;
+  height: 65px;
+  border-radius: 20px;
+  padding-left:10px;
+  margin-top: 15px;
+  margin-bottom: 15px;
+
+}
+
+.langage_container p, .budget_container p{
+    margin-bottom: 0;
+    line-height: 16px;
+    padding: 4px;
+    
+}
+
+.first_text{
+    /* Languages */
+font-family: 'Montserrat';
+font-style: normal;
+font-weight: 600;
+font-size: 12px;
+line-height: 17px;
+/* identical to box height */
+
+color: #000000;
+
+mix-blend-mode: normal;
+opacity: 0.5;
+
+}
+.second_text{
+    font-family: 'Montserrat';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 10px;
+    line-height: 25px;
+    /* identical to box height */
+    color:#353131;
+
+}
+
+.iconLangage{
+    margin-right:10px;
+    margin-left:5px
+}
+.expore_more_home{
+  font-family: 'Montserrat';
+  font-style: normal;
+  font-weight: bold;
+  font-size: 14px;
+  line-height: 17px;
+  color: #394149;
+  opacity: 0.7;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  opacity: 0.4;
+  margin-top: 15px;
+}
+
+.exporeMoreHomePage .explore-more{
+    width: 79px
+}
+
+.exporeMoreHomePage .explore-more article {
+    width: 104px;
+    height: 71px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+  
+ 
+}
+
+.exporeMoreHomePage .explore-more article img{
+    height: 44px;
+    width: 47px;
+   
+}
+
+.exporeMoreHomePage .expore-more-title{
+    font-size:12px
+}
+
+.see_more{
+    background-color: #007BFF;
+  color: white;
+  padding: 20px;
+  height: 71px;
+  width: 54px;
+  border-radius: 16px;
+  text-align: center;
+  font-size: 20px;
+}
+
+.explore_flex_container{
+    display: flex;
+    justify-content: space-between;
+}
+
+.see_more img{
+    width: 15px;
+    height: 16px;
+    object-fit: contain;
+
+}
+  .iconLangage{
+    width: 2f0px;
+}
+
+
+
+.leaflet-left .leaflet-control {
+
+    margin-left: 10px;
+    transform: rotate(270deg);
+    border:none
+  }
+
+  .leaflet-touch .leaflet-bar {
+    border: none;
+
+
+  }
+
+ .leaflet-touch .leaflet-control-zoom-in,   .leaflet-touch .leaflet-control-zoom-out {
+    font-size: 14px;
+    color:#007BFF;
+  }
+
+
+
+  .leaflet-touch .leaflet-bar a:first-child {
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+  }
+
+.leaflet-touch .leaflet-bar a:last-child {
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+  }
+
+
+  .css-wk1isc-MuiTabs-root .MuiTab-root {
+    font-weight: 700;
+    text-transform: none;
+    font-size: 14px;
+    color: #444;
+  }
+
+
+  .css-vc4tfz-MuiTypography-root {
+    margin: 0;
+      margin-bottom: 0px;
+    font-family: "Roboto","Helvetica","Arial",sans-serif;
+    font-weight: 400;
+    font-size: 1rem;
+    line-height: 1.75;
+    letter-spacing: 0.00938em;
+    font-weight: 400;
+    margin-bottom: 8px;
+  }
+
+  .css-w76bbz-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input.MuiSelect-select {
+    height: auto;
+    min-height: 1.4375em;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    color: black;
+  }
+
+
+  .d-flex.home_destination_card_title.justify-content-between{
+    padding-top: 20px;
+    padding-bottom: 10px;
+  }
