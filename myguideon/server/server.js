@@ -16,7 +16,7 @@ app.use(session(config.sessionConfig));
 app.use(config.corsMiddleware);
 
 
-app.use('/', routers);
+app.use('/api', routers);
 
 app.listen(config.PORT, () => {
   console.log(`🚀 Server is running on port ${config.PORT}`);
