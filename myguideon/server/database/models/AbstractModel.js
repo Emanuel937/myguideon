@@ -5,7 +5,7 @@ class AbstractModel {
   constructor({ table }) {
     if (this.constructor === AbstractModel) {
       throw new TypeError(
-        "Abstract class 'AbstractModel' cannot be instantiated directly"
+        "Abstract class 'AbstractModel' cannot be instantiated directly "
       );
     }
 
