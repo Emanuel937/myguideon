@@ -1,6 +1,6 @@
 const express = require('express');
 const app     = express();
-const routers = require('./app/routers/index');
+const ApiRouters = require('./app/routers/index');
 const cors    = require('cors'); 
 const path    = require('path');
 const session = require('express-session');
@@ -38,7 +38,7 @@ app.use(cors({
 app.use(express.json());
 
 // Routes
-app.use('/', routers);
+app.use('/api', ApiRouters);
 
 const PORT = 3030;
 

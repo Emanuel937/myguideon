@@ -1,22 +1,41 @@
-const AbstractModel = require('../database/AbstractModel');
+const AbstractModel = require("../database/AbstractModel");
+const database = require("../client"); 
 
-class DestinationModal extends AbstractModel {
-    constructor() {
-        super({ table: 'destination' });
+class DestinationModel extends AbstractModel {
+  constructor() {
+    super({ table: "destination" });
+  }
+
+  async add(basicInfo, author) {
+    const connection = await database.getConnection(); 
+    try {
+      const query =
+        "INSERT INTO destination (basic_info, author) VALUES (?, ?)";
+      const [result] = await connection.execute(query, [
+        JSON.stringify(basicInfo),
+        author,
+      ]);
+      return result.insertId;
+    } catch (error) {
+      console.error("❌ Erreur lors de l'ajout :", error);
+      throw error;
+    } finally {
+      connection.release();
     }
+  }
 
-    async add(basicInfo, author) {
-        const query = 'INSERT INTO destination (basic_info, author) VALUES (?, ?)';
-        const [result] = await db.execute(query, [JSON.stringify(basicInfo), author]);
-        return result.insertId;
+  async update(id, updatedBasicInfo) {
+    const connection = await database.getConnection();
+    try {
+      const query = "UPDATE destination SET basic_info = ? WHERE id = ?";
+      await connection.execute(query, [JSON.stringify(updatedBasicInfo), id]);
+    } catch (error) {
+      console.error("❌ Erreur lors de la mise à jour :", error);
+      throw error;
+    } finally {
+      connection.release(); 
     }
-
-    async update(id, updatedBasicInfo) {
-        const query = 'UPDATE destination SET basic_info = ? WHERE id = ?';
-        await db.execute(query, [JSON.stringify(updatedBasicInfo), id]);
-    }
-
-    
+  }
 }
 
-module.exports = new DestinationModal();
+module.exports = new DestinationModel();
