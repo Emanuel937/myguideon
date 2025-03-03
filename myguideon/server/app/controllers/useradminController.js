@@ -1,11 +1,20 @@
-const UserAdmin = require('../../database/models/useradminModal');
-const bcrypt = require('bcrypt');
-const sendMail = require('../utils/transporter');
-const useradminModal = require('../../database/models/useradminModal');
+const UserAdmin                              = require('../../database/models/useradminModal');
+const bcrypt                                 = require('bcrypt');
+const sendMail                               = require('../utils/transporter');
+const {hashPassword, verifyPassword}         = require('../helpers/argonHelper');
+const loginValidator                         = require('../validator/loginValidator');
+const registerValidator                      = require('../validator/registerValidator');
+
 
 const userAdminController = {
 
     async addUserAdmin(req, res){
+
+    
+    const { error } = registerValidator.validate(req.body);
+    if (error) {
+        return res.status(400).json({ error: true, message: error.details[0].message });
+    }
 
     const  {name, email, password, avatar, profileId}  = req.body;
 
@@ -16,7 +25,7 @@ const userAdminController = {
         return res.status(200).json({ error:true, message: "C'est mail est déja utilisé" });
    }
 
-    var hashedPassword = await bcrypt.hash(password, 10);
+    var hashedPassword = await hashPassword(password);
 
     var html = `<h1>  Un compte avec votre mail vient d'être créé </h1>
                 <p>vous pouvez dès maintenant vous connecter sur espace utilisateur , voici votre mail:
@@ -58,7 +67,6 @@ const userAdminController = {
             const [users] = await UserAdmin.findAll();
             res.status(200).json({message:users});
         } catch (error) {
-            console.error('Erreur lors de la récupération des administrateurs:', error);
             res.status(500).json({ message: 'Erreur serveur.' });
         }
     }, 
@@ -153,18 +161,29 @@ const userAdminController = {
       
 
         try {
+            //validator joi
+
+            const { error } = loginValidator.validate(req.body);
+            if (error) {
+                return res.status(400).json({ error: error.details[0].message });
+            }
+
             const [rows] =  await UserAdmin.findByEmail(email);
+
+
         
           if (rows.length === 0) {
+
             return res.status(404).json({ error: 'Utilisateur non trouvé.' });
+
           }
 
           const user = rows[0];
      
 
-          const passwordMatch = await bcrypt.compare(password, user.password);
+          const passwordMatch =  await verifyPassword(user.password, password);
      
-
+        
           if (!passwordMatch) {
             
             return res.status(401).json({ error: 'Mot de passe incorrect.' });
@@ -252,7 +271,7 @@ const userAdminController = {
 
         try{
 
-            const hashedPassword = await bcrypt.hash(newPassword, 10)
+            const hashedPassword = await hashPassword(newPassword);
             await UserAdmin.updateNewPassword(hashedPassword, email);
 
             
@@ -316,12 +335,12 @@ const userAdminController = {
             try {
           
                 if (password) {
-                  const isHashed = password.startsWith("$2b$") || password.startsWith("$2a$") || password.startsWith("$2y$");
-                  if (!isHashed) {
-                    password = await bcrypt.hash(password, 10); 
+                    const isHashed = password.startsWith("$argon2");
+                    if (!isHashed) {
+                      password = await hashPassword(password);
+                    }
                   }
-                }
-             
+
                 await UserAdmin.updateUser(name, email, password, avatar, profil_id, id);
                 res.status(200).json({ message: "Utilisateur mis à jour avec succès " });
           

@@ -1,14 +1,10 @@
-const { connect } = require("../../app/routers/user_admin");
-const AbstractModel = require("./AbstractModel");
-
- 
+const AbstractModel  = require("./AbstractModel");
 
 class UserAdminModel extends AbstractModel {
     constructor() {
         super({ table: "user_admin" }); 
     }
     
-
     // add user admin
     async add(name, permissions) {
         const query = "INSERT INTO user_admin (name, permissions) VALUES (?, ?)";
