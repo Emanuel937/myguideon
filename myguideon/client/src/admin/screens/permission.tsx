@@ -79,7 +79,7 @@ export default function ProfilePermissionsManager() {
   // Gérer le changement d'onglet
   const handleTabChange = (event: React.SyntheticEvent, newValue: string) => {
     setCurrentTab(newValue);
-    setCurrentProfile(null); // Réinitialiser le profil sélectionné lorsque l'on change d'onglet
+    setCurrentProfile(null); 
   };
   
   // add profil and permission 
@@ -203,14 +203,28 @@ export default function ProfilePermissionsManager() {
   // Supprimer un profil
   const handleDeleteProfile = async(profileId: number) => {
     
+    
     await fetch(`${HOSTNAME_WEB}/profil/delete/${profileId}`, {
       method:'DELETE',
     });
+    
+
+    try{
+    
 
     const updatedProfiles = profiles.filter((profile) => profile.id !== profileId);
+
     setProfiles(updatedProfiles);
     handleSnackbar('Profil supprimé avec succès!');
     handleShowProfil();
+
+    setIsAddRole(false);
+
+    console.log('data delete');
+    }
+    catch(error){
+      console.log(error);
+    }
 
   };
 
@@ -237,7 +251,7 @@ export default function ProfilePermissionsManager() {
     }).then((data)=>{
         
         var profilFromData = setProfiles(data.message.map((e: Profile) => ({ ...e })));
-        console.log(profilFromData);
+       
    
       })
       .catch((error)=>{
@@ -473,7 +487,7 @@ useEffect(
                      setIsAddRole(true);
                     
                   }}>
-                    + ajouter un menbre
+                    + ajouter un profil
                   </Button>
                 </Box>
             </Box>

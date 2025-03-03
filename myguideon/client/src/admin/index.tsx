@@ -68,11 +68,12 @@ const BackOfficeTemplate: React.FC<BackOfficeTemplateProps> = ({ children }) => 
   const [avatar, setAvatar]           = useState(" ") ;
   const [name, setName ]              = useState(" ");
   const [searchParams]                = useSearchParams();
-  // Récupérer la valeur de "page"
+
   const [selectedSection, setSelectedSection] = useState("dashboard");
   const navigate =  useNavigate();
   
   
+
 
 
 
@@ -98,6 +99,8 @@ const BackOfficeTemplate: React.FC<BackOfficeTemplateProps> = ({ children }) => 
   };
   
   const allPermissions = () => {
+
+
     fetch(`${HOSTNAME_WEB}/profil/`)
       .then((response) => {
         if (!response.ok) {
@@ -106,6 +109,7 @@ const BackOfficeTemplate: React.FC<BackOfficeTemplateProps> = ({ children }) => 
         return response.json();
       })
       .then((response) => {
+        console.log('data:', response);
         // Assuming "data.message" is an array and you want to modify it
         const filteredPermissions = response.message.filter((element:any) =>  {
           
@@ -115,8 +119,9 @@ const BackOfficeTemplate: React.FC<BackOfficeTemplateProps> = ({ children }) => 
         
         }
       
-      )
-           setPermissions(filteredPermissions[0].permissions);
+      )     
+        
+        setPermissions(filteredPermissions[0].permissions);
       
       })
       .catch((error) => {
