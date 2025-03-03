@@ -1,13 +1,21 @@
-const DestinationModal  = require('./models/destinationModal');
-const UserAdminModal    = require('./models/useradminModal'); 
-
-const tables            = {
-
-}
-
-tables.destination =  new  DestinationModal ();
-tables.userAdmin   =  new  UserAdminModal()
+const DestinationModel  = require('./models/destinationModal');
+const UserAdminModel    = require('./models/useradminModal'); 
 
 
+const tables            = {}
 
-module.exports = tables;
+/******************************TABLES*********************************************** */
+tables.destination =  new  DestinationModel();
+tables.userAdmin   =  new  UserAdminModel()
+
+
+/*************************EXPORT****************************************************** */
+module.exports = new Proxy(tables, {
+    get(obj, prop) {
+      if (prop in obj) return obj[prop];
+  
+      throw new ReferenceError(
+        `tables.${prop} is not defined . Did you want register it in ${__filename}?`,
+      );
+    },
+  });

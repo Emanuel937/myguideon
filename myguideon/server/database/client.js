@@ -4,8 +4,8 @@ require("dotenv").config({ path: "./.env" });
 const port = process.env.MYSQL_PORT;
 const host = process.env.DB_HOST;
 const database = process.env.MYSQL_DATABASE;
-const dbuser = process.env.MYSQL_ROOT_USER;
-const dbPassword = process.env.MYSQL_ROOT_PASSWORD;
+const dbuser = process.env.MYSQL_USER;
+const dbPassword = process.env.MYSQL_PASSWORD;
 
 const pool = mysql.createPool({
   host,

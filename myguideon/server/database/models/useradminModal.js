@@ -212,4 +212,4 @@ class UserAdminModel extends AbstractModel {
 
 }
 
-module.exports = new UserAdminModel();
+module.exports = UserAdminModel;

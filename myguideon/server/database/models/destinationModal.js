@@ -89,4 +89,4 @@ class DestinationModel extends AbstractModel {
   }
 } 
 
-module.exports = new DestinationModel();
+module.exports = DestinationModel;
