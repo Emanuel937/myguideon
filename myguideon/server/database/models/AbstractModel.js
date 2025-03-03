@@ -1,5 +1,5 @@
 
-const database = require("../client");
+const {pool} = require("../client");
 
 class AbstractModel {
   constructor({ table }) {
@@ -10,7 +10,8 @@ class AbstractModel {
     }
 
     this.table = table;
-    this.database = database;
+    
+    this.pool = pool;
   }
 }
 

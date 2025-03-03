@@ -1,22 +1,33 @@
 const mysql = require("mysql2/promise");
 require("dotenv").config({ path: "./.env" });
 
-const port = process.env.MYSQL_PORT;
-const host = process.env.DB_HOST;
-const database = process.env.MYSQL_DATABASE;
-const dbuser = process.env.MYSQL_ROOT_USER;
-const dbPassword = process.env.MYSQL_ROOT_PASSWORD;
-
 const pool = mysql.createPool({
-  host,
-  database,
-  user: dbuser,
-  password: dbPassword,
-  port,
+  host: process.env.DB_HOST,
+  database: process.env.MYSQL_DATABASE,
+  user: process.env.MYSQL_USER,
+  password: process.env.MYSQL_PASSWORD,
+  port: process.env.MYSQL_PORT,
   waitForConnections: true,
   connectionLimit: 10,
   queueLimit: 0,
 });
+
+// const port = process.env.MYSQL_PORT;
+// const host = process.env.DB_HOST;
+// const database = process.env.MYSQL_DATABASE;
+// const dbuser = process.env.MYSQL_USER;
+// const dbPassword = process.env.MYSQL_PASSWORD;
+
+// const pool = mysql.createPool({
+//   host,
+//   database,
+//   user: dbuser,
+//   password: dbPassword,
+//   port,
+//   waitForConnections: true,
+//   connectionLimit: 10,
+//   queueLimit: 0,
+// });
 
 async function getConnection() {
   try {
@@ -27,6 +38,17 @@ async function getConnection() {
     throw error;
   }
 }
+
+async function testConnection() {
+  try {
+    const [rows] = await pool.query('SELECT 1 + 1 AS solution');
+    console.log('Connexion réussie ! Résultat :', rows);
+  } catch (error) {
+    console.error('Erreur de connexion :', error);
+  }
+}
+
+testConnection();
 
 module.exports = {
   pool,

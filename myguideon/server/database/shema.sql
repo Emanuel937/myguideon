@@ -1,161 +1,312 @@
--- phpMyAdmin SQL Dump
--- version 4.9.3
--- https://www.phpmyadmin.net/
---
--- Host: localhost:8889
--- Generation Time: Mar 03, 2025 at 12:16 AM
--- Server version: 5.7.26
--- PHP Version: 7.3.9
+/**************************************************************************************************************/
+/************************************************************************************************************/
+/***************NEWBDD************************************************************************************/
 
-SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET time_zone = "+00:00";
+-- MySQL dump 10.13  Distrib 8.0.38, for Win64 (x86_64)
+--
+-- Host: localhost    Database: myguideon
+-- ------------------------------------------------------
+-- Server version	8.0.38
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!50503 SET NAMES utf8 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Database: `myguideon`
+-- Table structure for table `activities`
 --
 
--- --------------------------------------------------------
+DROP TABLE IF EXISTS `activities`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `activities` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(150) NOT NULL,
+  `description` text NOT NULL,
+  `price` decimal(10,2) NOT NULL,
+  `currency` enum('USD','EUR') NOT NULL DEFAULT 'EUR',
+  `imageCover` varchar(500) DEFAULT NULL,
+  `location` varchar(150) NOT NULL,
+  `latitude` decimal(10,7) DEFAULT NULL,
+  `longitude` decimal(10,7) DEFAULT NULL,
+  `language` varchar(50) DEFAULT 'English',
+  `duration` varchar(50) DEFAULT NULL,
+  `max_participants` int DEFAULT '20',
+  `availability` json DEFAULT NULL,
+  `age_limit` int DEFAULT NULL,
+  `category` enum('Aventure','Culture','Sport','Gastronomie') DEFAULT 'Aventure',
+  `status` enum('Published','Draft') DEFAULT 'Published',
+  `is_favorite` tinyint DEFAULT '0',
+  `add_to_plan` tinyint DEFAULT '0',
+  `created_by` int NOT NULL,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` datetime DEFAULT NULL,
+  `image_cover_id` int DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `created_by` (`created_by`),
+  KEY `image_cover_id` (`image_cover_id`),
+  CONSTRAINT `activities_ibfk_1` FOREIGN KEY (`created_by`) REFERENCES `userpro` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `activities_ibfk_2` FOREIGN KEY (`image_cover_id`) REFERENCES `images` (`id`) ON DELETE SET NULL
+) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `activities`
+--
+
+LOCK TABLES `activities` WRITE;
+/*!40000 ALTER TABLE `activities` DISABLE KEYS */;
+/*!40000 ALTER TABLE `activities` ENABLE KEYS */;
+UNLOCK TABLES;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+
+--
+-- Table structure for table `activity_images`
+--
+
+DROP TABLE IF EXISTS `activity_images`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `activity_images` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `activity_id` int NOT NULL,
+  `image_id` int NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `activity_id` (`activity_id`),
+  KEY `image_id` (`image_id`),
+  CONSTRAINT `activity_images_ibfk_1` FOREIGN KEY (`activity_id`) REFERENCES `activities` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `activity_images_ibfk_2` FOREIGN KEY (`image_id`) REFERENCES `images` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `activity_images`
+--
+
+LOCK TABLES `activity_images` WRITE;
+/*!40000 ALTER TABLE `activity_images` DISABLE KEYS */;
+/*!40000 ALTER TABLE `activity_images` ENABLE KEYS */;
+UNLOCK TABLES;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+
+
+
 
 --
 -- Table structure for table `destination`
 --
 
+DROP TABLE IF EXISTS `destination`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `destination` (
-  `id` int(11) NOT NULL,
-  `basic_info` text NOT NULL,
-  `gallery` text,
-  `activity` text,
-  `pratical_info` text,
+  `id` int NOT NULL AUTO_INCREMENT,
+  `basic_info` json NOT NULL,
+  `gallery` json DEFAULT NULL,
+  `activity` json DEFAULT NULL,
+  `pratical_info` json DEFAULT NULL,
   `imageCover` varchar(2000) DEFAULT NULL,
-  `activities` text,
-  `culture` text,
-  `info` text,
-  `historical` text,
-  `author` varchar(500) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `activities` json DEFAULT NULL,
+  `culture` json DEFAULT NULL,
+  `info` json DEFAULT NULL,
+  `historical` json DEFAULT NULL,
+  `author` varchar(500) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `destination`
 --
 
-INSERT INTO `destination` (`id`, `basic_info`, `gallery`, `activity`, `pratical_info`, `imageCover`, `activities`, `culture`, `info`, `historical`, `author`) VALUES
-(42, '{\"destinationName\":\"Maldives - The Tropical -Paradise\",\"language\":\"portuguese\",\"budget\":\"400€\",\"currency\":\"USD\",\"status\":\"Published\",\"address\":\"Luanda, Province de Luanda, Angola\",\"imgpath\":\"/public/uploads/0/meteo/1739393979886.png\",\"categories\":\"Antigua and Barbuda\",\"lon\":\"13.2439512\",\"lat\":\"-8.8272699\"}', '[\"/public/uploads/destination/gallery/1739473249968-9074196b-6014-4df0-807f-586c58010420.jpg\",\"/public/uploads/destination/gallery/1739473249968-8f03baa8-396e-47c2-84fb-6cfc88ac53e8.jpg\",\"/public/uploads/destination/gallery/1739598887543-115e7b33-de3d-40f4-97ec-e58bd273fb53.jpg\",\"/public/uploads/destination/gallery/1739598906714-23719436-feaa-49d8-a461-edac9cfd2395.png\",\"/public/uploads/destination/gallery/1739634111495-07676752-bdee-4c61-aaaa-df06beef6a91.jpg\",\"/public/uploads/destination/gallery/1739634155785-7ed99fd8-474a-4bea-985c-d65f1cc7ce7f.jpg\",\"/public/uploads/destination/gallery/1739634216690-0b0fea43-9132-4878-8871-90be68460a29.jpg\",\"/public/uploads/destination/gallery/1739634330833-9e3b7318-a5a3-48fc-aa0c-b4109e9c2843.jpg\",\"/public/uploads/destination/gallery/1739803675458-7d3ca5cf-1cea-43c8-8104-f984560281f4.jpg\",\"/public/uploads/destination/gallery/1739803675459-9cea9b10-b295-4bde-9e8b-cfd9cb73c3e4.jpg\",\"/public/uploads/destination/gallery/1739803675461-658399a5-4259-4ba2-b97b-f18fd4dc7ebe.jpg\",\"/public/uploads/destination/gallery/1739803675462-18846d5c-7ae0-4019-ad13-3759e8c26989.jpg\",\"/public/uploads/destination/gallery/1739803675463-0785e1bf-e067-4a11-80f4-ded9b9020b1c.jpg\",\"/public/uploads/destination/gallery/1739803675463-f6774e11-23f3-4acc-9fd8-7a1da36a454d.jpg\"]', NULL, NULL, '/public/uploads/destination/gallery/1739473249968-9074196b-6014-4df0-807f-586c58010420.jpg', NULL, NULL, NULL, NULL, '17'),
-(45, '{\"destinationName\":\"check langue\",\"language\":\"portuguese\",\"budget\":\"200€\",\"currency\":\"USD\",\"status\":\"Published\",\"address\":\"Por, Creto, Pieve di Bono-Prezzo, Comunità delle Giudicarie, Province de Trente, Trentin-Haut-Adige, 38085, Italie\",\"imgpath\":\"/public/uploads/45/meteo/1739648109786.jpg\",\"categories\":\"Antigua and Barbuda\",\"lon\":\"10.6484344\",\"lat\":\"45.9398797\"}', '[\"/public/uploads/destination/gallery/1739648062452-915d9c68-8dfc-4107-81c8-38e88b0b57e0.jpg\",\"/public/uploads/destination/gallery/1739648062453-57abd652-2246-4e3a-a3c2-4e7e6e1b663a.jpg\",\"/public/uploads/destination/gallery/1739648062453-62fe71dc-0ca5-46fa-9069-fdd9a5030503.jpg\",\"/public/uploads/destination/gallery/1739648062454-14f1e406-2199-4343-9f8b-5c78b982d1ff.jpg\",\"/public/uploads/destination/gallery/1739648062454-85fdd0f8-fc5a-4e34-8acc-3d822fbad44e.jpg\",\"/public/uploads/destination/gallery/1739648062454-9a3d8f7d-045c-4a0c-a328-b651618555df.jpg\",\"/public/uploads/destination/gallery/1739648062454-a2b88467-7246-4292-859b-c7ab3ac5cd98.jpg\",\"/public/uploads/destination/gallery/1739648448692-d32b3c6e-b90a-4133-81f5-bf50b55d3fd4.jpg\",\"/public/uploads/destination/gallery/1739648496578-81121767-ed24-48ca-91b1-391e50750259.jpg\",\"/public/uploads/destination/gallery/1739648496580-148c3a93-427f-4522-a386-50a3863780fb.jpg\",\"/public/uploads/destination/gallery/1739648496580-23a04f16-def6-4648-95e1-6b92ef0a351e.jpg\",\"/public/uploads/destination/gallery/1739648496580-fad030c4-b2f2-4836-b091-b9d9dd2fe472.jpg\",\"/public/uploads/destination/gallery/1739648496581-6a5e2b45-1e05-478b-8102-c502338e4cd7.jpg\",\"/public/uploads/destination/gallery/1739648496581-beb6949e-2a90-466c-9058-eef2146b7868.jpg\",\"/public/uploads/destination/gallery/1739648496581-17430d77-1426-4519-a772-64e9a35c3b4f.jpg\",\"/public/uploads/destination/gallery/1739648496581-13c08cf1-4aac-4b12-956b-c17e423bc471.jpg\"]', NULL, NULL, '/public/uploads/destination/gallery/1739648062452-915d9c68-8dfc-4107-81c8-38e88b0b57e0.jpg', NULL, NULL, NULL, NULL, '17'),
-(46, '{\"destinationName\":\"last\",\"language\":\"portuguese\",\"budget\":\"200€\",\"currency\":\"USD\",\"status\":\"Published\",\"address\":\"Paris, Île-de-France, France métropolitaine, France\",\"imgpath\":\"/public/uploads/45/meteo/1739648537781.jpg\",\"categories\":\"Antigua and Barbuda\",\"lon\":\"2.3200410217200766\",\"lat\":\"48.8588897\"}', '[\"/public/uploads/destination/gallery/1739649048059-29d490bc-f4bd-41ff-ad0c-6f74a041a9b3.jpg\",\"/public/uploads/destination/gallery/1739649048059-c3a14819-04e0-40b9-9cfe-3366f583843f.jpg\",\"/public/uploads/destination/gallery/1739649048060-9ebb7280-5ffc-4df7-89fc-b7a516dd5761.jpg\",\"/public/uploads/destination/gallery/1739649048060-41a1e8f1-8e24-4daa-bf7a-6aa5c5a2de7f.jpg\",\"/public/uploads/destination/gallery/1739649048060-23d430f9-c174-4870-a92c-30daf1e47eba.jpg\",\"/public/uploads/destination/gallery/1739649048060-1d8dcb88-0359-4c61-962c-49353b8804cc.jpg\",\"/public/uploads/destination/gallery/1739649048060-32008fdd-939a-48fb-9f39-9a41cbf201d7.jpg\",\"/public/uploads/destination/gallery/1739649048060-703e92f9-f8cf-4a73-a74f-a4ca8565109e.jpg\"]', NULL, NULL, '/public/uploads/destination/gallery/1739649048059-29d490bc-f4bd-41ff-ad0c-6f74a041a9b3.jpg', NULL, NULL, NULL, NULL, '17');
+LOCK TABLES `destination` WRITE;
+/*!40000 ALTER TABLE `destination` DISABLE KEYS */;
+/*!40000 ALTER TABLE `destination` ENABLE KEYS */;
+UNLOCK TABLES;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
--- --------------------------------------------------------
+--
+-- Table structure for table `images`
+--
+
+DROP TABLE IF EXISTS `images`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `images` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `url` varchar(500) NOT NULL,
+  `alt_text` varchar(250) DEFAULT NULL,
+  `description` text,
+  `type` enum('profile','cover','gallery','activity') DEFAULT 'gallery',
+  `owner_id` int DEFAULT NULL,
+  `owner_type` enum('user','userpro','admin','activity') DEFAULT 'user',
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+   `updated_at` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `images`
+--
+
+LOCK TABLES `images` WRITE;
+/*!40000 ALTER TABLE `images` DISABLE KEYS */;
+/*!40000 ALTER TABLE `images` ENABLE KEYS */;
+UNLOCK TABLES;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
 
 --
 -- Table structure for table `permissions`
 --
 
+DROP TABLE IF EXISTS `permissions`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `permissions` (
-  `id` int(11) NOT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
   `name` varchar(500) DEFAULT NULL,
-  `permissions` text
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `permissions` json DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `permissions`
 --
 
-INSERT INTO `permissions` (`id`, `name`, `permissions`) VALUES
-(4, 'admin', '[1,2,3,4,5,6,7,8,10,9]'),
-(6, 'Admin destination', '[1,11]');
+LOCK TABLES `permissions` WRITE;
+/*!40000 ALTER TABLE `permissions` DISABLE KEYS */;
+/*!40000 ALTER TABLE `permissions` ENABLE KEYS */;
+UNLOCK TABLES;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
--- --------------------------------------------------------
 
 --
 -- Table structure for table `things_to_do`
 --
 
+DROP TABLE IF EXISTS `things_to_do`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `things_to_do` (
-  `id` int(11) NOT NULL,
-  `name` text NOT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(500) NOT NULL,
   `adress` varchar(500) NOT NULL,
-  `destination_id` varchar(500) DEFAULT NULL,
+  `destination_id` int DEFAULT NULL,
   `description` text NOT NULL,
-  `logintude` varchar(500) CHARACTER SET utf8mb4 DEFAULT NULL,
+  `longitude` varchar(500) DEFAULT NULL,
   `icon` text NOT NULL,
-  `gallery` text NOT NULL,
+  `gallery` json NOT NULL,
   `destination_name` varchar(500) NOT NULL,
-  `lant` varchar(500) DEFAULT NULL,
+  `latitude` varchar(500) DEFAULT NULL,
   `category` varchar(500) DEFAULT NULL,
-  `status` varchar(500) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `status` varchar(500) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `destination_id` (`destination_id`),
+  CONSTRAINT `things_to_do_ibfk_1` FOREIGN KEY (`destination_id`) REFERENCES `destination` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `things_to_do`
 --
 
-INSERT INTO `things_to_do` (`id`, `name`, `adress`, `destination_id`, `description`, `logintude`, `icon`, `gallery`, `destination_name`, `lant`, `category`, `status`) VALUES
-(15, 'promenade', 'Paris, France métropolitaine, France', '35', 'done test', 'undefined', '1737754033047-187852615.jpg', '[\"1737754033050-709592763.jpg\"]', 'luanda', 'undefined', 'NATURE & ADVENTURE', 'Published');
+LOCK TABLES `things_to_do` WRITE;
+/*!40000 ALTER TABLE `things_to_do` DISABLE KEYS */;
+/*!40000 ALTER TABLE `things_to_do` ENABLE KEYS */;
+UNLOCK TABLES;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
--- --------------------------------------------------------
 
 --
 -- Table structure for table `user_admin`
 --
 
+DROP TABLE IF EXISTS `user_admin`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `user_admin` (
-  `id` int(11) NOT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
   `name` varchar(500) NOT NULL,
   `email` varchar(500) NOT NULL,
   `password` text,
   `avatar` varchar(500) DEFAULT NULL,
   `profil_id` varchar(500) DEFAULT NULL,
   `reset_code` varchar(500) DEFAULT NULL,
-  `isfirsttime` varchar(500) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `isfirsttime` varchar(500) DEFAULT NULL,
+  `profile_image_id` int DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `profile_image_id` (`profile_image_id`),
+  CONSTRAINT `user_admin_ibfk_1` FOREIGN KEY (`profile_image_id`) REFERENCES `images` (`id`) ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `user_admin`
 --
 
-INSERT INTO `user_admin` (`id`, `name`, `email`, `password`, `avatar`, `profil_id`, `reset_code`, `isfirsttime`) VALUES
-(17, 'reded', 'eabizimi@gmail.com', '$2b$10$hp4JgbXOqNaDLOPIzV8NIO5C7zVgItAV2LMer3S9PboUoxv0U7krS', 'https://cdn.pixabay.com/photo/2023/06/23/11/23/ai-generated-8083323_1280.jpg', '4', NULL, NULL),
-(30, 'test mendes', 'emanuelabizimi@gmail.com', '$2b$10$H2YPVzXTipNVEdx4YgPP5.SLaAaj2RtS3qQSJJEluPZ5awhyBaCpq', 'https://cdn.pixabay.com/photo/2023/06/23/11/23/ai-generated-8083323_1280.jpg', '4', NULL, 'yes');
+LOCK TABLES `user_admin` WRITE;
+/*!40000 ALTER TABLE `user_admin` DISABLE KEYS */;
+/*!40000 ALTER TABLE `user_admin` ENABLE KEYS */;
+UNLOCK TABLES;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 --
--- Indexes for dumped tables
+-- Table structure for table `userpro`
 --
 
---
--- Indexes for table `destination`
---
-ALTER TABLE `destination`
-  ADD PRIMARY KEY (`id`);
+DROP TABLE IF EXISTS `userpro`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `userpro` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(150) NOT NULL,
+  `email` varchar(200) NOT NULL,
+  `password` text NOT NULL,
+  `phone` varchar(20) DEFAULT NULL,
+  `company_name` varchar(200) DEFAULT NULL,
+  `address` varchar(250) DEFAULT NULL,
+  `description` text,
+  `profile_image` varchar(500) DEFAULT NULL,
+  `role` enum('guide','host','agency') DEFAULT 'guide',
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `is_verified` tinyint DEFAULT '0',
+  `profile_image_id` int DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `email` (`email`),
+  KEY `profile_image_id` (`profile_image_id`),
+  CONSTRAINT `userpro_ibfk_1` FOREIGN KEY (`profile_image_id`) REFERENCES `images` (`id`) ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Indexes for table `permissions`
---
-ALTER TABLE `permissions`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `user_admin`
---
-ALTER TABLE `user_admin`
-  ADD PRIMARY KEY (`id`);
-
---
--- AUTO_INCREMENT for dumped tables
+-- Dumping data for table `userpro`
 --
 
---
--- AUTO_INCREMENT for table `destination`
---
-ALTER TABLE `destination`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=47;
+LOCK TABLES `userpro` WRITE;
+/*!40000 ALTER TABLE `userpro` DISABLE KEYS */;
+/*!40000 ALTER TABLE `userpro` ENABLE KEYS */;
+UNLOCK TABLES;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
---
--- AUTO_INCREMENT for table `permissions`
---
-ALTER TABLE `permissions`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
---
--- AUTO_INCREMENT for table `user_admin`
---
-ALTER TABLE `user_admin`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+-- Dump completed on 2025-03-03 11:58:09

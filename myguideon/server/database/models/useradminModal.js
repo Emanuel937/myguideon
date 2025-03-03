@@ -8,7 +8,7 @@ class UserAdminModel extends AbstractModel {
     // add user admin
     async add(name, permissions) {
         const query = "INSERT INTO user_admin (name, permissions) VALUES (?, ?)";
-        const connection = await this.database.getConnection(); 
+        const connection = await this.pool.getConnection(); 
         try {
             const [result] = await connection.execute(query, [name, JSON.stringify(permissions)]);
             return result.insertId;
@@ -23,7 +23,7 @@ class UserAdminModel extends AbstractModel {
     
     async addPermissions(name, permissions){
 
-        const connection  =  await this.database.getConnection();
+        const connection  =  await this.pool.getConnection();
         const query       =  "INSERT INTO permissions (name, permissions) VALUES (?, ?)";
         try{
             const[result] = await connection.execute(query, [name, permissions]);
@@ -38,7 +38,7 @@ class UserAdminModel extends AbstractModel {
     // update permissions
     async update(id, permissions) {
         const query = "UPDATE user_admin SET permissions = ? WHERE id = ?";
-        const connection = await this.database.getConnection();
+        const connection = await this.pool.getConnection();
         try {
             await connection.execute(query, [JSON.stringify(permissions), id]);
         } catch(error) {
@@ -51,7 +51,7 @@ class UserAdminModel extends AbstractModel {
 
     async findByEmail(email){
         const query =  "SELECT * FROM user_admin WHERE  email = ? ";
-        const connection = await this.database.getConnection();
+        const connection = await this.pool.getConnection();
 
         try{
             const response = await connection.execute(query, [email]);
@@ -67,7 +67,7 @@ class UserAdminModel extends AbstractModel {
     }
     async resetCode(resetCode, email)
     {   
-        const connection = await this.database.getConnection();
+        const connection = await this.pool.getConnection();
 
         const query = 'UPDATE user_admin SET reset_code = ? WHERE email = ?';
 
@@ -79,7 +79,7 @@ class UserAdminModel extends AbstractModel {
 
     async verifyCode(email, code){
 
-        const connection  = await this.database.getConnection();
+        const connection  = await this.pool.getConnection();
 
         const query = 'SELECT * FROM user_admin WHERE email = ? AND reset_code = ?';
 
@@ -93,7 +93,7 @@ class UserAdminModel extends AbstractModel {
 
     async updateNewPassword(newPassword, email){
 
-        const connection  = await this.database.getConnection();
+        const connection  = await this.pool.getConnection();
         const query       = 'UPDATE user_admin SET password = ?, reset_code = NULL, isfirsttime = NULL WHERE email = ?';
 
         await connection.execute(query, [newPassword, email]);
@@ -105,7 +105,7 @@ class UserAdminModel extends AbstractModel {
 
     async findAll(){
         console.log('getting ....');
-        const connection  = await this.database.getConnection();
+        const connection  = await this.pool.getConnection();
         const query       = 'SELECT * FROM user_admin';
 
         const response    =  await connection.execute(query);
@@ -116,7 +116,7 @@ class UserAdminModel extends AbstractModel {
     }
 
     async findById(id){ 
-        const connection  = await this.database.getConnection();
+        const connection  = await this.pool.getConnection();
         const query       = 'SELECT * FROM user_admin WHERE id = ?';
 
         const response    =  await connection.execute(query, [id]);
@@ -127,7 +127,7 @@ class UserAdminModel extends AbstractModel {
     }
 
     async findAllPermissions(){
-        const connection  = await this.database.getConnection();
+        const connection  = await this.pool.getConnection();
         const query       = 'SELECT * FROM permissions';
 
         const response    =  await connection.execute(query);
@@ -138,7 +138,7 @@ class UserAdminModel extends AbstractModel {
     }
 
     async updatePermissios(permission, id){
-        const connection  =  await this.database.getConnection();
+        const connection  =  await this.pool.getConnection();
         const query       =  "UPDATE permissions SET permissions = ? WHERE id = ?"
         try{
             await connection.execute(query, [permission, id]);
@@ -151,7 +151,7 @@ class UserAdminModel extends AbstractModel {
 
    async deleteRoles(id){
 
-     const connection =  await this.database.getConnection();
+     const connection =  await this.pool.getConnection();
      const query      = "DELETE FROM permissions WHERE id = ?";
 
      try{
@@ -165,7 +165,7 @@ class UserAdminModel extends AbstractModel {
   
   async addAdminUser(name, email, password, avatar, profil_id, isfirstTime){
 
-    const connection =  await this.database.getConnection();
+    const connection =  await this.pool.getConnection();
     const query =  "INSERT INTO user_admin (name, email, password, avatar, profil_id, isfirsttime) VALUES (?, ?, ?, ?, ?, ?)";
   
     try{
@@ -182,7 +182,7 @@ class UserAdminModel extends AbstractModel {
         const query = `  UPDATE user_admin SET name = ?, email = ?, password = ?, avatar = ?, profil_id = ?
                         WHERE id = ?`;
 
-        const connection =  await this.database.getConnection();
+        const connection =  await this.pool.getConnection();
         try{
 
             connection.execute(query, [name, email, password, avatar, profil_id, id]);
@@ -196,7 +196,7 @@ class UserAdminModel extends AbstractModel {
    async deleteUser(id)
    {
 
-        const connection  =  await this.database.getConnection();
+        const connection  =  await this.pool.getConnection();
 
         const query = 'DELETE FROM user_admin WHERE id = ?';
 
@@ -212,4 +212,4 @@ class UserAdminModel extends AbstractModel {
 
 }
 
-module.exports = new UserAdminModel();
+module.exports = UserAdminModel;
