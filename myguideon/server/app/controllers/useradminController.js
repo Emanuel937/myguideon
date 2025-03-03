@@ -1,9 +1,9 @@
 const UserAdmin                              = require('../../database/models/useradminModal');
-const bcrypt                                 = require('bcrypt');
 const sendMail                               = require('../utils/transporter');
 const {hashPassword, verifyPassword}         = require('../helpers/argonHelper');
 const loginValidator                         = require('../validator/loginValidator');
 const registerValidator                      = require('../validator/registerValidator');
+const {generateToken}                        = require('../helpers/jwtHelper');
 
 
 const userAdminController = {
@@ -188,7 +188,11 @@ const userAdminController = {
             
             return res.status(401).json({ error: 'Mot de passe incorrect.' });
           }
-          res.status(200).json({ message: user.id, isfirstTime: user.isfirsttime });
+          // generate the token 
+          const token = generateToken({ id: user.id, email: user.email});
+          res.status(200).json({ message: user.id, isfirstTime: user.isfirsttime, token:token });
+
+
         } catch (error) {
 
       
@@ -294,11 +298,6 @@ const userAdminController = {
         }catch(error){
             console.log(error);
         }
-      },
-
-
-      async addUseAdmin(req, res){
-        console.log(' add user admin is running');
       },
 
     async getPermissions(req, res){

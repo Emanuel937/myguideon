@@ -25,9 +25,11 @@ class DestinationModel extends AbstractModel {
   }
 
   async update(id, updatedBasicInfo) {
+
     const connection = await this.database.getConnection();
+    const query = "UPDATE destination SET basic_info = ? WHERE id = ?";
     try {
-      const query = "UPDATE destination SET basic_info = ? WHERE id = ?";
+      
       await connection.execute(query, [JSON.stringify(updatedBasicInfo), id]);
     } catch (error) {
       console.error("❌ Erreur lors de la mise à  jour :", error);
@@ -37,6 +39,7 @@ class DestinationModel extends AbstractModel {
       connection.release();
     }
   }
+
     async findAll() {
       const connection = await this.database.getConnection();  
 
@@ -64,12 +67,25 @@ class DestinationModel extends AbstractModel {
         
       } catch (error) {
           console.error("❌ :", error);
-          return res.status(500).json({ error: "Une erreur est survenue" }); // ✅ Retourner une réponse en cas d'erreur
+          return res.status(500).json({ error: "Une erreur est survenue" }); 
       }
       finally{
         connection.release();
       }
-      
+  }
+
+  async deleteDestination(id){
+
+    const connection = await this.database.getConnection(); 
+
+    try{
+        const query =  "DELETE FROM destination WHERE id = ?";
+        await connection.execute(query, [id])
+
+    }finally{
+      connection.release();
+    }
+    
   }
 } 
 

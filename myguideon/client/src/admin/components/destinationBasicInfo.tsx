@@ -68,7 +68,6 @@ const DestinationBasicInfo = ({ index = null }: { index?: BasicProps }) => {
     categories: " ",
     lon:'',
     lat:' ',
-    imgpath:''
   });
 
 
@@ -154,7 +153,7 @@ const DestinationBasicInfo = ({ index = null }: { index?: BasicProps }) => {
   
     const preview = URL.createObjectURL(file);
     setWeatherImage({ file, preview });
-    setFormData({... formData, imgpath:preview});
+    setFormData({... formData});
    
   };
   
@@ -174,68 +173,39 @@ const DestinationBasicInfo = ({ index = null }: { index?: BasicProps }) => {
   };
  
 
-
+  
   const handleSubmit = async (e?: React.FormEvent) => {
     e?.preventDefault();
-      
-   
-  if (index == null){
-      if(!isFormValid())
-      {
+  
+    if (index == null) {
+      if (!isFormValid()) {
         alert("Veuillez remplir tous les champs obligatoires !");
         return;
       }
-  }
-        
-    const data = new FormData();
-  
-    // Ajouter les données de formulaire (destinationName, budget, etc.)
-    Object.entries(formData).forEach(([key, value]) => {
-      // Si la valeur est un tableau, on l'ajoute séparément dans FormData
-      if (Array.isArray(value)) {
-        value.forEach((val) => {
-          data.append(key, val); // Ajouter chaque élément du tableau comme une nouvelle entrée
-        });
-      }else{
-        data.append(key, value); 
-      }
-    });
-
-    // adding file image to data array to send the host
-
-    if(weatherImage.file){
-      data.append('weather_image', weatherImage.file );
     }
-
-
-    // set author data here 
-    const userId = localStorage.getItem('userId');
-    if (userId) {
-      data.append('author', userId);
-    }
-
-    // Supprimer les doublons dans les tags de langue
-    const uniqueLangueTags = Array.from(
-      new Set(
-        langueTags.map((tag) =>
-          tag.trim().toLowerCase() // Normaliser les valeurs (supprimer les espaces, mettre en minuscule)
-        )
-      )
-    );
   
-    console.log("Images sélectionnées avant ajout à FormData:", data);
+    // Créer un objet JSON au lieu d'un FormData
+    const jsonData = {
+      ...formData, 
+      author: localStorage.getItem('userId')
+    };
   
     try {
       const response = await fetch(restApiLink, {
         method: "POST",
-        body: data,
-      }).then((res) => {
-
-        setSuccessAlert(true);
-
-        if(index == null){
-
-          setFormData({
+        headers: {
+          "Content-Type": "application/json", // ✅ Ajout du Content-Type
+        },
+        body: JSON.stringify(jsonData),
+      });
+  
+      const result = await response.json(); // ✅ Convertir la réponse en JSON
+      console.log('Réponse du serveur:', result);
+  
+      setSuccessAlert(true);
+  
+      if (index == null) {
+        setFormData({
           destinationName: "",
           language: [""],
           budget: "",
@@ -243,26 +213,22 @@ const DestinationBasicInfo = ({ index = null }: { index?: BasicProps }) => {
           status: "Draft",
           address: "",
           categories: " ",
-          lon:'',
-          lat:' ',
-          imgpath:''
-        
-        })
-
-        }
-        return res.json();
-      });
-  
-      if (response.id) {
-        localStorage.setItem("destinationId", response.id);
-      } else {
-        console.error("Erreur lors de l’ajout :", response);
+          lon: "",
+          lat: ""
+        });
       }
+  
+      if (result.id) {
+        localStorage.setItem("destinationId", result.id);
+      } else {
+        console.error("Erreur lors de l’ajout :", result);
+      }
+  
     } catch (error) {
       console.error("Erreur de réseau : ", error);
     }
   };
-  
+
   
   const getCurrentDestination = async () => {
     try {
@@ -292,25 +258,6 @@ const DestinationBasicInfo = ({ index = null }: { index?: BasicProps }) => {
   };
   
 
-  const fetchCategories = async () => {
-    const response = await fetch(`${HOSTNAME_WEB}/categories`)
-      .then((response) => {
-        if (!response.ok) {
-          throw ('there is an error');
-        }
-        return response.json();
-      }).then((response) => {
-
-        var categoriesArray = response.map((e: any) => {
-          return e.categories_name;
-        });
-
-        setCategories([...categoriesArray]);
-
-      }).catch((error) => {
-        console.log(error);
-      })
-  }
 
   useEffect(() => {
     fetch("/data/languages.json")
@@ -322,7 +269,7 @@ const DestinationBasicInfo = ({ index = null }: { index?: BasicProps }) => {
       getCurrentDestination();
     }
 
-    fetchCategories();
+  
   }, [index]); // Ajoutez les dépendances nécessaires
 
 
@@ -585,43 +532,6 @@ const DestinationBasicInfo = ({ index = null }: { index?: BasicProps }) => {
             />
           </Grid>
 
-          {/* Images météo */}
-          <Grid item xs={12}>
-            <ImageUploader
-              label="Ajouter une image météo"
-              onFileSelect={(e:any)=> handleFileSelect(e)}
-            />
-            <Box display="flex" gap={2} flexWrap="wrap">
-              {formData.imgpath && (
-                <Box key={index} position="relative" mt={2}>
-                  <img
-                    src={formData.imgpath?.startsWith("blob:") ? formData.imgpath : `${HOSTNAME_WEB}${formData.imgpath}` || " "}
-                    alt="Weather"
-                    style={{
-                      width: 100,
-                      height: 100,
-                      borderRadius: 8,
-                      objectFit: "cover",
-                    }}
-                  />
-                  <Button
-                    variant="contained"
-                    color="secondary"
-                    onClick={() => handleRemoveWeatherImage}
-                    sx={{
-                      position: "absolute",
-                      top: 0,
-                      right: 0,
-                    }}
-                  >
-                    X
-                  </Button>
-                </Box>
-              )}
-            </Box>
-          </Grid>
-
-          {/* Soumettre */}
         </Grid>
       </form>
 
