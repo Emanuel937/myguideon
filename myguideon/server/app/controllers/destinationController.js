@@ -1,4 +1,4 @@
-const Destination = require('../models/destinationModal');
+const Destination = require('../../database/models/destinationModal');
 
 
 const destinationController = {
@@ -37,7 +37,7 @@ const destinationController = {
         }
     },
 
-    async getAllDestinations(req, res) {
+    async getAllDestinations(req, res){
         try {
             const destinations = await Destination.findAll();
             res.status(200).json(destinations);
@@ -58,6 +58,8 @@ const destinationController = {
             res.status(500).json({ message: 'Erreur serveur.' });
         }
     }
+
+  
 };
 
 module.exports = destinationController;

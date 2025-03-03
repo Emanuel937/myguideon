@@ -33,5 +33,5 @@ module.exports = {
   }),
 
 
-  publicPath: path.join(__dirname, 'public'),
+  publicPath: path.join(__dirname, '../public'),
 };

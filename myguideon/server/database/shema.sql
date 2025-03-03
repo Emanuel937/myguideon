@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:8889
--- Generation Time: Feb 27, 2025 at 01:37 PM
+-- Generation Time: Mar 03, 2025 at 12:16 AM
 -- Server version: 5.7.26
 -- PHP Version: 7.3.9
 
@@ -13,27 +13,6 @@ SET time_zone = "+00:00";
 --
 -- Database: `myguideon`
 --
-
--- --------------------------------------------------------
-
---
--- Table structure for table `categories`
---
-
-CREATE TABLE `categories` (
-  `id` int(11) NOT NULL,
-  `categories_name` varchar(255) NOT NULL,
-  `categories_parent_id` int(11) DEFAULT NULL,
-  `description` text,
-  `image` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `categories`
---
-
-INSERT INTO `categories` (`id`, `categories_name`, `categories_parent_id`, `description`, `image`) VALUES
-(44, 'Afrique', NULL, 'c\'est un continent', NULL);
 
 -- --------------------------------------------------------
 
@@ -67,23 +46,22 @@ INSERT INTO `destination` (`id`, `basic_info`, `gallery`, `activity`, `pratical_
 -- --------------------------------------------------------
 
 --
--- Table structure for table `equipes`
+-- Table structure for table `permissions`
 --
 
-CREATE TABLE `equipes` (
+CREATE TABLE `permissions` (
   `id` int(11) NOT NULL,
   `name` varchar(500) DEFAULT NULL,
   `permissions` text
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `equipes`
+-- Dumping data for table `permissions`
 --
 
-INSERT INTO `equipes` (`id`, `name`, `permissions`) VALUES
-(4, 'admin', '[1,2,3,4,5,6,7,8,9,10,11]'),
-(6, 'Admin destination', '[1,11]'),
-(7, 'Activity Admin', '[11,10,9,8,7]');
+INSERT INTO `permissions` (`id`, `name`, `permissions`) VALUES
+(4, 'admin', '[1,2,3,4,5,6,7,8,10,9]'),
+(6, 'Admin destination', '[1,11]');
 
 -- --------------------------------------------------------
 
@@ -135,8 +113,8 @@ CREATE TABLE `user_admin` (
 --
 
 INSERT INTO `user_admin` (`id`, `name`, `email`, `password`, `avatar`, `profil_id`, `reset_code`, `isfirsttime`) VALUES
-(17, 'red', 'eabizimi@gmail.com', '$2b$10$A5Ks/VcLR5Z/xZiaQOybJOqXYYbOezmQ6iudlF05HmioimE7Z60eq', 'https://cdn.pixabay.com/photo/2023/06/23/11/23/ai-generated-8083323_1280.jpg', '4', NULL, NULL),
-(29, 'jean', 'eabizimisd@gmail.com', '$2b$10$H9G5Aob91v1I7hmNIkw17OS2WbdB.BmRf7nqlvLaRFNbEeHcipHIq', 'https://cdn.pixabay.com/photo/2023/06/23/11/23/ai-generated-8083323_1280.jpg', '4', NULL, 'yes');
+(17, 'reded', 'eabizimi@gmail.com', '$2b$10$hp4JgbXOqNaDLOPIzV8NIO5C7zVgItAV2LMer3S9PboUoxv0U7krS', 'https://cdn.pixabay.com/photo/2023/06/23/11/23/ai-generated-8083323_1280.jpg', '4', NULL, NULL),
+(30, 'test mendes', 'emanuelabizimi@gmail.com', '$2b$10$H2YPVzXTipNVEdx4YgPP5.SLaAaj2RtS3qQSJJEluPZ5awhyBaCpq', 'https://cdn.pixabay.com/photo/2023/06/23/11/23/ai-generated-8083323_1280.jpg', '4', NULL, 'yes');
 
 --
 -- Indexes for dumped tables
@@ -149,9 +127,9 @@ ALTER TABLE `destination`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `equipes`
+-- Indexes for table `permissions`
 --
-ALTER TABLE `equipes`
+ALTER TABLE `permissions`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -171,13 +149,13 @@ ALTER TABLE `destination`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=47;
 
 --
--- AUTO_INCREMENT for table `equipes`
+-- AUTO_INCREMENT for table `permissions`
 --
-ALTER TABLE `equipes`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+ALTER TABLE `permissions`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `user_admin`
 --
 ALTER TABLE `user_admin`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
