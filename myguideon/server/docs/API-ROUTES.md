@@ -116,18 +116,20 @@ $ npm run test
 
       at log (database/client.js:45:13)
 
- PASS  tests/activities.test.js
+ PASS  __tests__/activities.test.js
+  √ POST /api/activities - devrait ajouter... (2 ms)
+  √ PUT /api/activities/:id - devrait mettre à jour...
   📌 Test API Activities
-    √ GET /api/activities - devrait retourner toutes les activités (111 ms)                                                                 
-    √ GET /api/activities/:id - devrait retourner une activité (11 ms)
-    √ POST /api/activities - devrait ajouter une nouvelle activité (28 ms)                                                                  
-    √ PUT /api/activities/:id - devrait mettre à jour une activité (12 ms)                                                                  
-    √ DELETE /api/activities/:id - devrait supprimer une activité (11 ms)                                                                   
+    √ GET /api/activities - devrait retourner toutes les activités (101 ms)
+    √ GET /api/activities/:id - devrait retourner une activité avec ses images (10 ms)
+    √ POST /api/activities - devrait ajouter une nouvelle activité avec images (36 ms)
+    √ PUT /api/activities/:id - devrait mettre à jour une activité avec images (16 ms)
+    √ DELETE /api/activities/:id - devrait supprimer une activité (11 ms)
 
-Test Suites: 1 passed, 1 total                                        
-Tests:       5 passed, 5 total                                        
+Test Suites: 1 passed, 1 total
+Tests:       7 passed, 7 total
 Snapshots:   0 total
-Time:        1.999 s, estimated 2 s
+Time:        1.776 s, estimated 2 s
 Ran all test suites.
 
 /************************************************************************/

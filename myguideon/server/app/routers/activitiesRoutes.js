@@ -2,7 +2,10 @@ const express = require('express');
 
 const router = express.Router();
 
-/********************************************IMPORT CONTROLLERS************************************ */
+/********************************************IMPORT************************************ */
+
+const uploadFile = require('../middleware/uploadFile');
+
 const {getAllActivities,
 getActivityById,
 addActivity,
@@ -15,9 +18,15 @@ router.get('/', getAllActivities);
 
 router.get('/:id', getActivityById);
 
-router.post('/', addActivity);
+router.post('/', uploadFile().fields([
+    { name: 'imageCover', maxCount: 1 },
+    { name: 'gallery', maxCount: 10 }
+]), addActivity);
 
-router.put('/:id', updateActivity);
+router.put('/:id',uploadFile().fields([
+    { name: 'imageCover', maxCount: 1 },
+    { name: 'gallery', maxCount: 10 }
+]) ,updateActivity);
 
 router.delete('/:id', deleteActivity);
 
