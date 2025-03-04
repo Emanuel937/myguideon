@@ -19,7 +19,7 @@ describe('📌 Test API Activities', () => {
     });
 
     it('GET /api/activities/:id - devrait retourner une activité avec ses images', async () => {
-        const res = await request(server).get('/api/activities/25');  // 🚨 Utiliser server et non app
+        const res = await request(server).get('/api/activities/27');  // 🚨 Utiliser server et non app
         expect(res.status).toBe(200);
         expect(res.body).toHaveProperty('id');
         expect(res.body).toHaveProperty('images');
@@ -50,7 +50,7 @@ describe('📌 Test API Activities', () => {
 
     it('PUT /api/activities/:id - devrait mettre à jour une activité avec images', async () => {
         const res = await request(server)
-            .put('/api/activities/25')
+            .put('/api/activities/27')
             .field('name', 'Updated Activity')
             .field('description', 'Updated Description')
             .field('price', 150)  
@@ -73,7 +73,7 @@ describe('📌 Test API Activities', () => {
     
 
     it('DELETE /api/activities/:id - devrait supprimer une activité', async () => {
-        const res = await request(server).delete('/api/activities/25');
+        const res = await request(server).delete('/api/activities/27');
         expect(res.status).toBe(200);
         expect(res.body.message).toBe('Activité supprimée avec succès.');
     });
