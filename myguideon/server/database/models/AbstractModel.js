@@ -1,16 +1,13 @@
-
-const database = require("../client");
+const { pool } = require('../client');
 
 class AbstractModel {
   constructor({ table }) {
     if (this.constructor === AbstractModel) {
-      throw new TypeError(
-        "Abstract class 'AbstractModel' cannot be instantiated directly "
-      );
+      throw new TypeError("Abstract class 'AbstractModel' cannot be instantiated directly");
     }
 
     this.table = table;
-    this.database = database;
+    this.pool = pool;  // 🚨 Utilisation du pool ici
   }
 }
 

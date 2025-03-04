@@ -1,12 +1,13 @@
 const DestinationModel  = require('./models/destinationModal');
 const UserAdminModel    = require('./models/useradminModal'); 
-
+const UserproModel = require('./models/userproModel');
 
 const tables            = {}
 
 /******************************TABLES*********************************************** */
 tables.destination =  new  DestinationModel();
-tables.userAdmin   =  new  UserAdminModel()
+tables.userAdmin   =  new  UserAdminModel();
+tables.userpro = new UserproModel();
 
 
 /*************************EXPORT****************************************************** */
