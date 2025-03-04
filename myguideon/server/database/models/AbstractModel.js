@@ -1,4 +1,4 @@
-const { pool } = require('../client');  // Assure-toi que le chemin est correct !
+const { pool } = require('../client');  
 
 class AbstractModel {
   async getConnection() {
@@ -14,7 +14,7 @@ class AbstractModel {
     }
 
     this.table = table;
-    this.pool = pool;  // Utilise le pool importé depuis client.js
+    this.pool = pool; 
   }
 }
 

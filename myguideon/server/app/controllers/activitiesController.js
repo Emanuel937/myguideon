@@ -27,30 +27,8 @@ const getActivityById = async (req, res) => {
     }
   };
 
-// const addActivity = async (req, res) => {
-//     try {
-//       const { error } = validateActivity(req.body);
-//       if (error) {
-//         return res.status(400).json({ error: error.details[0].message }); 
-//       }
-
-//       const imageCover = req.files?.imageCover?.[0]?.filename || null;
-//       const gallery = req.files?.gallery?.map((file) => file.filename) || [];
-
-//       const newActivity = await tables.activities.addActivity({
-//         ...req.body, 
-//         imageCover,
-//         gallery: JSON.stringify(gallery),
-//       });
-//       res.status(201).json(newActivity);
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).json({ error: 'Erreur serveur' });
-//   }
-// }
-
 const addActivity = async (req, res) => {
-  const connection = await tables.activities.getConnection(); // Récupérer une connexion depuis le pool
+  const connection = await tables.activities.getConnection(); 
   await connection.beginTransaction();
 
   try {
@@ -63,7 +41,7 @@ const addActivity = async (req, res) => {
     const imageCover = req.files?.imageCover?.[0]?.filename || null;
     const gallery = req.files?.gallery?.map(file => file.filename) || [];
 
-    // ➡️ Ajouter l'image cover dans `images` et récupérer `image_cover_id`
+    // ➡️ Ajout de  l'image cover dans `images` et récupérer `image_cover_id`
     let imageCoverId = null;
     if (imageCover) {
       const [result] = await connection.query(
@@ -73,14 +51,14 @@ const addActivity = async (req, res) => {
       imageCoverId = result.insertId;
     }
 
-    // ➡️ Ajouter l'activité dans `activities` avec `image_cover_id`
+    // ➡️ Ajout de l'activité dans `activities` avec `image_cover_id`
     const newActivity = await tables.activities.addActivity({
       ...req.body,
       imageCover: `/assets/img/${imageCover}`,
       image_cover_id: imageCoverId,
     });
 
-    // ➡️ Ajouter les images de `gallery` dans `images` et `activity_images`
+    // ➡️ Ajout des images de `gallery` dans `images` et `activity_images`
     if (gallery.length > 0) {
       const galleryPromises = gallery.map(async (file) => {
         const [imgResult] = await connection.query(
@@ -105,7 +83,7 @@ const addActivity = async (req, res) => {
     console.error(error);
     res.status(500).json({ error: 'Erreur serveur' });
   } finally {
-    connection.release(); // Libérer la connexion
+    connection.release(); 
   }
 };
 
@@ -132,14 +110,14 @@ const updateActivity = async (req, res) => {
       );
       imageCoverId = coverResult.insertId;
 
-      // ➡️ Mettre à jour `image_cover_id` dans `activities`
+      // ➡️ Mets à jour `image_cover_id` dans `activities`
       await connection.query(
         "UPDATE activities SET image_cover_id = ? WHERE id = ?",
         [imageCoverId, id]
       );
     }
 
-    // ➡️ Mettre à jour `activities` sans toucher à `gallery`
+    // ➡️ Mets à jour `activities` sans toucher à `gallery`
     await connection.query(
       `UPDATE activities SET 
         name = ?, description = ?, price = ?, currency = ?, location = ?, latitude = ?, longitude = ?, 
@@ -165,7 +143,7 @@ const updateActivity = async (req, res) => {
       ]
     );
 
-    // ➡️ Mettre à jour les images `gallery` dans `activity_images` et `images`
+    // ➡️ Mets à jour les images `gallery` dans `activity_images` et `images`
     if (gallery.length > 0) {
       // Supprimer les anciennes associations
       await connection.query(
@@ -199,34 +177,6 @@ const updateActivity = async (req, res) => {
     connection.release();
   }
 };
-
-// const updateActivity = async (req, res) => {
-//     try {
-//      const { error } = validateActivity(req.body);
-//       if (error) {
-//         return res.status(400).json({ error: error.details[0].message });
-//       }
-
-//       const imageCover = req.files?.imageCover?.[0]?.filename || null;
-//       const gallery = req.files?.gallery?.map(file => file.filename) || [];
-
-//       const { id } = req.params;
-//       const isUpdated = await tables.activities.updateActivity(id, {
-//         ...req.body,
-//       imageCover,
-//       gallery: JSON.stringify(gallery),
-//       });
-//       if (isUpdated === 0) {
-//         res.status(404).json({ error: 'Activité non trouvée' });
-//       } else {
-//         res.status(200).json({ message: 'Activité mise à jour avec succès.' });
-//       }
-//     } catch (error) {
-//       console.error(error);
-//       res.status(500).json({ error: 'Erreur serveur' });
-//     }
-//   }
-
   const deleteActivity = async (req, res) => {
     try {
       const rowsAffected = await tables.activities.deleteActivity(req.params.id);
