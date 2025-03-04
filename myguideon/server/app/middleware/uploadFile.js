@@ -1,25 +1,24 @@
 const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
+const sharp = require('sharp'); // Library for image conversion
 
 /**
- * Upload middleware for handling both images and videos.
+ * Upload middleware with automatic WebP conversion for images
  * - Saves images in `/public/assets/img/`
  * - Saves videos in `/public/assets/video/`
- * - Generates a unique filename using the current timestamp
- * - Ensures file type and size validation
+ * - Converts images to WebP for better compression
  */
 
 const uploadFile = () => {
   const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-      // Determine if the file is an image or a video
       const isVideo = file.mimetype.startsWith('video/');
       const uploadDir = isVideo 
         ? path.join(__dirname, '../../public/assets/video/')
         : path.join(__dirname, '../../public/assets/img/');
 
-      // Create the directory if it doesn't exist
+      // Create directory if it doesn't exist
       if (!fs.existsSync(uploadDir)) {
         fs.mkdirSync(uploadDir, { recursive: true });
       }
@@ -27,26 +26,28 @@ const uploadFile = () => {
       cb(null, uploadDir);
     },
     filename: (req, file, cb) => {
-      // Generate a unique filename using timestamp and random number
-      const uniqueName = `${Date.now()}-${Math.round(Math.random() * 1E9)}${path.extname(file.originalname)}`;
-      cb(null, uniqueName);
+      const uniqueName = `${Date.now()}-${Math.round(Math.random() * 1E9)}`;
+      const ext = path.extname(file.originalname);
+
+      // Change file extension to .webp for images
+      const finalName = file.mimetype.startsWith('image/') ? `${uniqueName}.webp` : `${uniqueName}${ext}`;
+      cb(null, finalName);
     }
   });
 
-  // Allowed file types for images and videos
   const allowedTypes = {
     image: ['image/jpeg', 'image/png', 'image/webp'],
     video: ['video/mp4', 'video/mov', 'video/avi', 'video/mkv']
   };
 
-  return multer({
+  const upload = multer({
     storage: storage,
-    limits: { fileSize: 50 * 1024 * 1024 }, // Max 50MB (additional validation per file type below)
+    limits: { fileSize: 50 * 1024 * 1024 }, // Max 50MB
     fileFilter: (req, file, cb) => {
       const isImage = allowedTypes.image.includes(file.mimetype);
       const isVideo = allowedTypes.video.includes(file.mimetype);
 
-      // Reject if the file is neither an image nor a video
+      // Reject files that are neither images nor videos
       if (!isImage && !isVideo) {
         return cb(new Error('Invalid file format. Only images and videos are allowed.'));
       }
@@ -62,6 +63,32 @@ const uploadFile = () => {
       cb(null, true);
     }
   });
+
+  return (req, res, next) => {
+    upload.single('file')(req, res, async (err) => {
+      if (err) return res.status(400).send({ error: err.message });
+
+      // Convert image to WebP if it's an image file
+      if (req.file && req.file.mimetype.startsWith('image/')) {
+        const filePath = req.file.path;
+        const webpPath = filePath.replace(/\.[^.]+$/, '.webp'); // Replace extension with .webp
+
+        try {
+          await sharp(filePath)
+            .webp({ quality: 80 }) // Convert to WebP with 80% quality
+            .toFile(webpPath);
+
+          fs.unlinkSync(filePath); // Delete the original image file
+          req.file.path = webpPath;
+          req.file.filename = path.basename(webpPath);
+        } catch (error) {
+          return res.status(500).send({ error: 'Error processing image' });
+        }
+      }
+      
+      next();
+    });
+  };
 };
 
 module.exports = uploadFile;

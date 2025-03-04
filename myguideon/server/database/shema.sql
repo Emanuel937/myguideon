@@ -64,7 +64,6 @@ INSERT INTO `permissions` (`id`, `name`, `permissions`) VALUES
 (6, 'Admin destination', '[1,11]');
 
 -- --------------------------------------------------------
-
 --
 -- Table structure for table `things_to_do`
 --
