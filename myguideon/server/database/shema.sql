@@ -31,9 +31,8 @@ CREATE TABLE `activities` (
   `name` varchar(150) NOT NULL,
   `description` text NOT NULL,
   `price` decimal(10,2) NOT NULL,
-  `currency` varchar(10) DEFAULT 'USD',
+  `currency` enum('USD','EUR') NOT NULL DEFAULT 'EUR',
   `imageCover` varchar(500) DEFAULT NULL,
-  `gallery` json DEFAULT NULL,
   `location` varchar(150) NOT NULL,
   `latitude` decimal(10,7) DEFAULT NULL,
   `longitude` decimal(10,7) DEFAULT NULL,
@@ -48,13 +47,14 @@ CREATE TABLE `activities` (
   `add_to_plan` tinyint DEFAULT '0',
   `created_by` int NOT NULL,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` datetime DEFAULT NULL,
   `image_cover_id` int DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `created_by` (`created_by`),
   KEY `image_cover_id` (`image_cover_id`),
   CONSTRAINT `activities_ibfk_1` FOREIGN KEY (`created_by`) REFERENCES `userpro` (`id`) ON DELETE CASCADE,
   CONSTRAINT `activities_ibfk_2` FOREIGN KEY (`image_cover_id`) REFERENCES `images` (`id`) ON DELETE SET NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -66,6 +66,40 @@ LOCK TABLES `activities` WRITE;
 /*!40000 ALTER TABLE `activities` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+
+--
+-- Table structure for table `activity_images`
+--
+
+DROP TABLE IF EXISTS `activity_images`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `activity_images` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `activity_id` int NOT NULL,
+  `image_id` int NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `activity_id` (`activity_id`),
+  KEY `image_id` (`image_id`),
+  CONSTRAINT `activity_images_ibfk_1` FOREIGN KEY (`activity_id`) REFERENCES `activities` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `activity_images_ibfk_2` FOREIGN KEY (`image_id`) REFERENCES `images` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `activity_images`
+--
+
+LOCK TABLES `activity_images` WRITE;
+/*!40000 ALTER TABLE `activity_images` DISABLE KEYS */;
+/*!40000 ALTER TABLE `activity_images` ENABLE KEYS */;
+UNLOCK TABLES;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+
+
+
 
 --
 -- Table structure for table `destination`
@@ -116,6 +150,7 @@ CREATE TABLE `images` (
   `owner_id` int DEFAULT NULL,
   `owner_type` enum('user','userpro','admin','activity') DEFAULT 'user',
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+   `updated_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;

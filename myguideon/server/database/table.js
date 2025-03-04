@@ -1,14 +1,23 @@
+
 const DestinationModel  = require('./models/destinationModal');
 const UserAdminModel    = require('./models/useradminModal'); 
 const UserproModel = require('./models/userproModel');
+const ActivitiesModel = require('./models/activitiesModel');
+const RolePermissionsModel = require('./models/RolePermissionsModel');
 
-const tables            = {}
+
+const tables = {}
 
 /******************************TABLES*********************************************** */
 tables.destination =  new  DestinationModel();
+
 tables.userAdmin   =  new  UserAdminModel();
+
 tables.userpro = new UserproModel();
 
+tables.activities = new  ActivitiesModel();
+
+tables.role_permissions = new RolePermissionsModel();
 
 /*************************EXPORT****************************************************** */
 module.exports = new Proxy(tables, {

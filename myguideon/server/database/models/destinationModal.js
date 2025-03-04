@@ -6,7 +6,7 @@ class DestinationModel extends AbstractModel {
   }
 
   async add(basicInfo, author) {
-    const connection = await this.database.getConnection(); 
+    const connection = await this.pool.getConnection(); 
     try {
       const query =
         "INSERT INTO destination (basic_info, author) VALUES (?, ?)";
@@ -26,7 +26,7 @@ class DestinationModel extends AbstractModel {
 
   async update(id, updatedBasicInfo) {
 
-    const connection = await this.database.getConnection();
+    const connection = await this.pool.getConnection();
     const query = "UPDATE destination SET basic_info = ? WHERE id = ?";
     try {
       
@@ -41,7 +41,7 @@ class DestinationModel extends AbstractModel {
   }
 
     async findAll() {
-      const connection = await this.database.getConnection();  
+      const connection = await this.pool.getConnection();  
 
       try {
           const query = "SELECT * FROM destination";
@@ -57,7 +57,7 @@ class DestinationModel extends AbstractModel {
       }
   }
     async findById(id) {
-      const connection = await this.database.getConnection();  
+      const connection = await this.pool.getConnection();  
 
       try {
           const query = "SELECT * FROM destination WHERE id = ?";
@@ -76,7 +76,7 @@ class DestinationModel extends AbstractModel {
 
   async deleteDestination(id){
 
-    const connection = await this.database.getConnection(); 
+    const connection = await this.pool.getConnection(); 
 
     try{
         const query =  "DELETE FROM destination WHERE id = ?";
