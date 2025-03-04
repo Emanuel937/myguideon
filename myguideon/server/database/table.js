@@ -1,12 +1,13 @@
-const DestinationModel  = require('./models/destinationModal');
-const UserAdminModel    = require('./models/useradminModal'); 
+const DestinationModel = require('./models/destinationModal');
+const UserAdminModel = require('./models/useradminModal'); 
+const ActivitiesModel = require('./models/activitiesModel');
 
-
-const tables            = {}
+const tables = {}
 
 /******************************TABLES*********************************************** */
 tables.destination =  new  DestinationModel();
-tables.userAdmin   =  new  UserAdminModel()
+tables.userAdmin   =  new  UserAdminModel();
+tables.activities = new  ActivitiesModel();
 
 
 /*************************EXPORT****************************************************** */
