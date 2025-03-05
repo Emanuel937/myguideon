@@ -175,10 +175,11 @@ DROP TABLE IF EXISTS `permissions`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `permissions` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `name` varchar(500) DEFAULT NULL,
-  `permissions` json DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  `name` varchar(100) NOT NULL DEFAULT 'NOT NULL',
+  `description` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `name_UNIQUE` (`name`)
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -230,6 +231,64 @@ UNLOCK TABLES;
 
 
 --
+-- Table structure for table `roles`
+--
+
+DROP TABLE IF EXISTS `roles`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `roles` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(50) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `name` (`name`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `roles`
+--
+
+LOCK TABLES `roles` WRITE;
+/*!40000 ALTER TABLE `roles` DISABLE KEYS */;
+INSERT INTO `roles` VALUES (1,'admin'),(4,'agency'),(2,'guide'),(3,'host');
+/*!40000 ALTER TABLE `roles` ENABLE KEYS */;
+UNLOCK TABLES;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+
+
+--
+-- Table structure for table `role_permissions`
+--
+
+DROP TABLE IF EXISTS `role_permissions`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `role_permissions` (
+  `role_id` int NOT NULL,
+  `permission_id` int NOT NULL,
+  PRIMARY KEY (`role_id`,`permission_id`),
+  KEY `permission_id` (`permission_id`),
+  CONSTRAINT `role_permissions_ibfk_1` FOREIGN KEY (`role_id`) REFERENCES `roles` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `role_permissions_ibfk_2` FOREIGN KEY (`permission_id`) REFERENCES `permissions` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `role_permissions`
+--
+
+LOCK TABLES `role_permissions` WRITE;
+/*!40000 ALTER TABLE `role_permissions` DISABLE KEYS */;
+INSERT INTO `role_permissions` VALUES (1,1),(1,2),(1,3),(1,4),(1,5),(2,5),(3,5),(4,5),(1,6),(1,7),(2,7),(3,7),(4,7),(1,8),(2,8),(4,8),(1,9),(1,10),(1,11),(2,11);
+/*!40000 ALTER TABLE `role_permissions` ENABLE KEYS */;
+UNLOCK TABLES;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+
+
+--
 -- Table structure for table `user_admin`
 --
 
@@ -246,6 +305,7 @@ CREATE TABLE `user_admin` (
   `reset_code` varchar(500) DEFAULT NULL,
   `isfirsttime` varchar(500) DEFAULT NULL,
   `profile_image_id` int DEFAULT NULL,
+  `role_id` int NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`),
   KEY `profile_image_id` (`profile_image_id`),
   CONSTRAINT `user_admin_ibfk_1` FOREIGN KEY (`profile_image_id`) REFERENCES `images` (`id`) ON DELETE SET NULL
@@ -279,15 +339,18 @@ CREATE TABLE `userpro` (
   `address` varchar(250) DEFAULT NULL,
   `description` text,
   `profile_image` varchar(500) DEFAULT NULL,
-  `role` enum('guide','host','agency') DEFAULT 'guide',
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `is_verified` tinyint DEFAULT '0',
   `profile_image_id` int DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `role_id` int DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `email` (`email`),
   KEY `profile_image_id` (`profile_image_id`),
-  CONSTRAINT `userpro_ibfk_1` FOREIGN KEY (`profile_image_id`) REFERENCES `images` (`id`) ON DELETE SET NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  KEY `role_id` (`role_id`),
+  CONSTRAINT `userpro_ibfk_1` FOREIGN KEY (`profile_image_id`) REFERENCES `images` (`id`) ON DELETE SET NULL,
+  CONSTRAINT `userpro_ibfk_2` FOREIGN KEY (`role_id`) REFERENCES `roles` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=42 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --

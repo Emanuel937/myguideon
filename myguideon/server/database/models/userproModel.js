@@ -23,8 +23,9 @@ async getAllUsersPro() {
  * @returns {Promise<Object|null>} User or null if not found
  */
 async getUserProById(id) {
+
     const [rows] = await this.pool.query(
-        `SELECT id,name,company_name,email,phone,image_profile FROM ${this.table} WHERE id = ?`, [id]
+        `SELECT id,name,company_name,email,phone,profile_image, password FROM ${this.table} WHERE id = ?`, [id]
     )
     return rows[0];
 }
@@ -38,12 +39,13 @@ async getUserProById(id) {
 async AddUserPro(data) {
     try {
       const hashedPassword = await hashPassword(data.password);
+      const defaultRoleId = data.role_id || 2;
       const [result] = await this.pool.query(
-        `INSERT INTO ${this.table} (name,company_name, email, phone, password, profile_image, created_at, updated_at) 
-        VALUES (?, ?, ?, ?, ?, ?, NOW(), NOW())`,
-        [data.name,data.company_name, data.email, data.phone, hashedPassword, data.profile_image]
+        `INSERT INTO ${this.table} (name,company_name, email, phone, password, profile_image,role_id, created_at, updated_at) 
+        VALUES (?,?, ?, ?, ?, ?, ?, NOW(), NOW())`,
+        [data.name,data.company_name, data.email, data.phone, hashedPassword, data.profile_image, defaultRoleId]
       );
-      const token = generateToken({ id: result.insertId, email: data.email });
+      const token = generateToken({ id: result.insertId, email: data.email , role_id: defaultRoleId });
       return { id: result.insertId, token };
     } catch (error) {
       console.error("❌ ERREUR SQL AddUserPro:", error);
@@ -87,6 +89,14 @@ async updateUserPro(id,data) {
     );
     return result.affectedRows > 0 ;
 }
+
+async updatePassword(id, newPassword) {
+    const [result] = await this.pool.query(
+        `UPDATE ${this.table} SET password = ? WHERE id = ?`, [newPassword, id]
+    );
+    return result.affectedRows > 0;
+}
+
 /**
  * delete a user
  * @param {number} id 

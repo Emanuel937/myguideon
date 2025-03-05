@@ -25,29 +25,42 @@ router.post('/register', uploadFile().single('profile_image'), addUserPro);
 
 /***********************ROUTES PROTEGEES POUR USER CONNECTÉ*********************************** */
 // 🔒 Récupérer ses propres infos
-router.get('/me', authMiddleware, getUserProById);
+router.get('/me', authMiddleware(), getUserProById);
 
 // 🔒 Mettre à jour ses propres infos
-router.put('/me', authMiddleware, uploadFile().single('profile_image'), updateUserPro);
+router.put('/me', authMiddleware(), uploadFile().single('profile_image'), updateUserPro);
 
 // 🔒 Mettre à jour son propre mot de passe
-router.put('/me/password', authMiddleware, updatePassword);
+router.put('/me/password', (req, res, next) => {
+    next();
+}, authMiddleware('update_password_userpro'), (req, res, next) => {
+
+    next();
+}, (req, res, next) => {
+    next();
+}, updatePassword);
 
 /***********************ROUTES ADMIN SECURISEES*********************************** */
 // 🔒 Récupérer tous les userpro (admin seulement)
-router.get('/', authMiddleware, adminMiddleware, getAllUserPro);
+router.get('/', (req, res, next) => {
+    next();
+}, authMiddleware('view_userpro'), adminMiddleware, getAllUserPro);
 
 // 🔒 Récupérer un userpro par son id (admin seulement)
-router.get('/:id', authMiddleware, adminMiddleware, getUserProById);
+router.get('/:id', (req, res, next) => {
+    next();
+}, authMiddleware('view_userpro'), adminMiddleware, getUserProById);
 
 // 🔒 Mettre à jour un userpro par son id (admin seulement)
-router.put('/:id', authMiddleware, adminMiddleware, uploadFile().single('profile_image'), updateUserPro);
+router.put('/:id', authMiddleware('update_userpro'), adminMiddleware, uploadFile().single('profile_image'), updateUserPro);
 
 // 🔒 Mettre à jour le mot de passe d'un userpro par son id (admin seulement)
-router.put('/password/:id', authMiddleware, adminMiddleware, updatePassword);
+router.put('/password/:id', authMiddleware('update_password_userpro'), adminMiddleware, updatePassword);
 
 // 🔒 Supprimer un userpro par son id (admin seulement)
-router.delete('/:id', authMiddleware, adminMiddleware, deleteUserPro);
+router.delete('/:id', (req, res, next) => {
+    next();
+}, authMiddleware('delete_userpro'), adminMiddleware, deleteUserPro);
 
 /***********************EXPORT*********************************** */
 module.exports = router;

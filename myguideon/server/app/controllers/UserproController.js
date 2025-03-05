@@ -10,7 +10,7 @@ const { addUserProValidation,
 /*********************** Récupérer tous les UserPro ***********************/
 async function getAllUserPro(req, res) {
     try {
-        const users = await tables.userpro.getAllUserPro();
+        const users = await tables.userpro.getAllUsersPro();
         const sanitizedUsers = users.map(user => {
             const { password, ...rest } = user;  // 🔓 Enlève le mot de passe
             return rest;
@@ -25,16 +25,14 @@ async function getAllUserPro(req, res) {
 /*********************** Récupérer un UserPro par ID ***********************/
 async function getUserProById(req, res) {
     try {
-        const userId = req.user.id;  // 🔒 ID du token JWT
-        const isAdmin = req.user.role === 'admin';
-
-        console.log("Rôle du token :", req.user.role); 
+        const userId =req.params.id || req.user.id; 
+        const isAdmin = req.user.role_id === 1; 
 
         if (Number.parseInt(req.params.id) !== userId && !isAdmin) {
             return res.status(403).json({ error: "Accès refusé" });
         }
 
-        const user = await tables.userpro.getUserProById(req.params.id);
+        const user = await tables.userpro.getUserProById(userId || req.params.id);
         if (!user) return res.status(404).json({ error: "Utilisateur non trouvé" });
 
         const { password, ...sanitizedUser } = user;  // 🔓 Enlève le mot de passe
@@ -71,6 +69,7 @@ async function updateUserPro(req, res) {
         const userId = req.user.id;
         const profileImage = req.file?.filename ? `/assets/img/${req.file.filename}` : null;
 
+
         const isUpdated = await tables.userpro.updateUserPro(userId, {
             ...req.body,
             profile_image: profileImage
@@ -90,18 +89,15 @@ async function updateUserPro(req, res) {
 /*********************** Mettre à jour le mot de passe ***********************/
 async function updatePassword(req, res) {
     try {
-      const { error } =updatePasswordValidation(req.body);
+      const { error } = updatePasswordValidation(req.body);
       if (error) return res.status(400).json({ error: error.details[0].message });
         const { oldPassword, newPassword } = req.body;
         const user = await tables.userpro.getUserProById(req.user.id);
-
         if (!await verifyPassword(user.password, oldPassword)) {
             return res.status(400).json({ error: "Ancien mot de passe incorrect" });
         }
-
         const hashedPassword = await hashPassword(newPassword);
         await tables.userpro.updatePassword(req.user.id, hashedPassword);
-
         res.status(200).json({ message: "Mot de passe mis à jour avec succès." });
     } catch (error) {
         console.error("❌ ERREUR updatePassword:", error);
@@ -111,8 +107,8 @@ async function updatePassword(req, res) {
 
 /*********************** Supprimer un UserPro ***********************/
 async function deleteUserPro(req, res) {
-  const userId = req.user.id;         // 🔒 ID du token JWT
-  const isAdmin = req.user.role === 'admin';  // 🔒 Vérifie si l'utilisateur est admin
+  const userId = req.user.id;      
+  const isAdmin = req.user.role_id === 1; 
 
   // 🔒 Vérification : Seul l'utilisateur lui-même ou un admin peut supprimer le compte
   if (Number.parseInt(req.params.id) !== userId && !isAdmin) {
@@ -137,10 +133,18 @@ async function loginUserPro(req, res) {
   if (error) return res.status(400).json({ error: error.details[0].message });
 
   const { email, password ,role_id} = req.body;
-  const user = await tables.userpro.authenticateUserPro(email, password,role_id);
-  if (!user) return res.status(401).json({ error: "Email ou mot de passe incorrect" });
-
-  res.status(200).json({ token: user.token, message: 'Connexion réussie' });
+  try {
+        const user = await tables.userpro.authenticateUserPro(email, password, role_id);
+        if (!user) return res.status(401).json({ error: "Email ou mot de passe incorrect" });
+        res.status(200).json({ token: user.token,role_id:user.role_id ,message: 'Connexion réussie' });
+    } catch (error) {
+        if (error.message.includes("User not found")) {
+            res.status(404).json({ error: 'Utilisateur non trouvé' });
+    } else {
+        console.error("❌ ERREUR loginUserPro:", error);
+        res.status(500).json({ error: 'Erreur serveur' });
+    }
+}
 }
 
 /*********************** EXPORTS ***********************/

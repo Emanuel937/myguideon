@@ -41,8 +41,8 @@ const authUserProShema = Joi.object({
 /**********************Fonctions de validations********************************* */
 /******************************************************************************** */
 module.exports = {
-    addUserProValidation: (data) => addUserProSchema.validate(data),
-    updateUserProValidation: (data) => updateUserProSchema.validate(data),
-    updatePasswordValidation: (data) => updatePasswordSchema.validate(data),
-    authUserProValidation: (data) => authUserProShema.validate(data)
+    addUserProValidation: (data) => addUserProSchema.validate(data,{stripUnknown:true} ),
+    updateUserProValidation: (data) => updateUserProSchema.validate(data,{stripUnknown:true}),
+    updatePasswordValidation: (data) => updatePasswordSchema.validate(data,{stripUnknown:true}),
+    authUserProValidation: (data) => authUserProShema.validate(data,{stripUnknown:true})
 };
