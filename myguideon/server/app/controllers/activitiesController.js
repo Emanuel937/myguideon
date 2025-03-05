@@ -78,7 +78,6 @@ const addActivity = async (req, res) => {
     await connection.commit();
     res.status(201).json(newActivity);
   } catch (error) {
-    console.log("Erreur détectée :", error);
     await connection.rollback();
     console.error(error);
     res.status(500).json({ error: 'Erreur serveur' });
@@ -169,7 +168,6 @@ const updateActivity = async (req, res) => {
     await connection.commit();
     res.status(200).json({ message: 'Activité mise à jour avec succès.' });
   } catch (error) {
-    console.log("Erreur détectée :", error);
     await connection.rollback();
     console.error(error);
     res.status(500).json({ error: 'Erreur serveur' });
