@@ -1,8 +1,8 @@
 const AbstractModel = require("./AbstractModel");
 
-class DestinationModel extends AbstractModel {
+class ThingtoDoModel extends AbstractModel {
   constructor() {
-    super({ table: "destination" });
+    super({ table: "thingtodo" });
   }
 
   async add(basicInfo, author) {
@@ -109,7 +109,7 @@ class DestinationModel extends AbstractModel {
 
   async setGalleryAndCover(gallery, cover, id){
 
-    const query = "UPDATE destination SET gallery = ?, imageCover = ? WHERE id = ?";
+    const query = "UPDATE thingtodo SET gallery = ?,  WHERE id = ?";
     const connection  =  await this.database.getConnection();
 
     try{
@@ -122,4 +122,4 @@ class DestinationModel extends AbstractModel {
    }
 } 
 
-module.exports = new DestinationModel();
+module.exports = ThingtoDoModel();

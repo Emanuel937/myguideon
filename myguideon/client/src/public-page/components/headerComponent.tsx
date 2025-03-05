@@ -110,7 +110,7 @@ const SearchInput = () => {
         <div className="customer-search-container">
           <input
             type="text"
-            placeholder="Search your dream destination, activities, quests..."
+            placeholder="Search your dream destination ..."
             name="search_destination"
             onChange={(e)=>handleFilter(e)}
           />

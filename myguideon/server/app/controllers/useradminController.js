@@ -358,7 +358,7 @@ const userAdminController = {
 
         const userId = req.params.id; // ID de l'utilisateur à supprimer
 
-        const result =  UserAdmin.deleteUserAdmin(userId);
+        const result =  UserAdmin.deleteUser(userId);
        
             if (result.affectedRows === 0) {
             return res.status(404).json({ message: 'Utilisateur non trouvé' });

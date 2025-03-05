@@ -1,9 +1,14 @@
 
 :root{
     --big-photo-img:315px;
-    --modal-img--height:70%
+    --modal-img--height:70%;
+    --singleMeteoHeight:60px;
+    --metoIconSize:50px;
+    --meteoCarHeight:216px
  
 }
+
+
 
 
 
@@ -390,8 +395,24 @@ h4{
     justify-content: center;
     align-items: center;
     margin-left: 15px;
+
+
+
    
 }
+
+.exmplore-more-destination{
+    margin-right: 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-left: 15px;
+    border: 1px solid lightgray;
+    border-radius: 20px;
+}
+
+
 .explore-more article{
     width:165px;
     height: 112px;
@@ -1193,16 +1214,16 @@ p.credit img{
     background-color: white;
     border-radius: 20px;
     padding: 40px;
-    margin:40px
+    margin:25px
 }
 .pratique-info-cover img{
-   max-width: 321px;
-   width: 321px;
-   object-fit: cover;
-   height: 321px;
-   max-height: 321px;
-   border-radius: 80px;
-   border:3px solid #007BFF;
+    max-width: 300px;
+    width: 280px;
+    object-fit: cover;
+    height: 260px;
+    max-height: 321px;
+    border-radius: 60px;
+    border: 3px solid #007BFF;
 }
 .flex-50{
     width: 50%;
@@ -1215,16 +1236,15 @@ p.credit img{
 
 .pf-title{
    /* Votre Guide Pratique de Voyage */
-
-
-font-family: 'Montserrat';
-font-style: normal;
-font-weight: 700;
-font-size: 40px;
-line-height: 59px;
-text-transform: capitalize;
-color: #000000;
-max-width: 531px;
+   font-family: 'Montserrat';
+   font-style: normal;
+   font-weight: 700;
+   font-size: 40px;
+   line-height: 59px;
+   text-transform: capitalize;
+   color: #000000;
+   max-width: 531px;
+   height: 50px;
 }
 
 .pt-titre-2{
@@ -1292,12 +1312,12 @@ max-width: 531px;
 
 .pf-card{
     box-shadow: 4px 5px 15px 0px rgba(0, 0, 0, 0.25);
-    height: 206px;
+    min-height: 206px;
     border-radius: 12px;
     padding:10px;
-    margin-right: 40px;
     margin-bottom: 60px;
-    width:30%
+    width:30%;
+    margin-right: 3%;
 }
 .pf-card p{
 
@@ -1330,3 +1350,107 @@ max-width: 531px;
 .pf-h3{
     font-size: 17px;
 }
+
+
+
+.meteoCardFlex{
+    display: flex;
+    justify-content: space-between;
+}
+.meteoCardFlex > .singleMeteoContainer{
+    width: 7%;
+}
+
+.meteoCard > div{
+   background-repeat: no-repeat;
+   background-size: cover;
+   height:var(--meteoCarHeight);
+   max-height:var(--meteoCarHeight) ;
+   margin-top:80px;
+   padding-top: 30px;
+  padding-bottom: 30px;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+.meteoCard > div .singleMeteoContainer{
+    max-width: 100px;
+    background-color: white;
+    border-top-right-radius: 19px;
+    border-top-left-radius: 19px;
+    max-height: calc(var(--singleMeteoHeight) * 2);
+    height: calc(var(--singleMeteoHeight) * 2);
+
+  
+   
+}
+.singleMeteoHeader{
+   height: var(--singleMeteoHeight);
+   max-height: var(--singleMeteoHeight);
+   border-top-right-radius: 20px;
+   border-top-left-radius: 20px;
+   color:white;
+   display: flex;
+}
+.singleMeteoHeader img{
+    width: var(--metoIconSize);
+    object-fit: cover;
+    margin:auto
+
+
+    
+}
+.singleMeteoBody{
+    border-top-right-radius: 10px;
+    border-top-left-radius: 10px;
+    background-color:white;
+    height: var(--singleMeteoHeight);
+    max-height: var(--singleMeteoHeight);
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+}
+
+.singleMeteoBody .mois{
+    font-size:12px;
+    line-height: 20px;
+    font-weight: 600;
+  padding-top: 13px;
+  height: 25px;
+
+}
+.singleMeteoBodyP{
+    background-color:#eee6e6;
+    text-align: center;
+    border-radius: 20px;
+    font-size:12px;
+    margin-bottom: 20px;
+    padding-left: 8px;
+  padding-right: 8px;
+  font-size: 9px;
+}
+
+
+
+
+
+@media screen and (min-width: 1020px) and (max-width: 1200px) {
+    :root{
+      --singleMeteoHeight:45px;
+      --metoIconSize:30px;
+      --meteoCarHeight:140px
+    }
+  
+    .singleMeteoBodyP{
+      font-size: 8px;
+    }
+
+    .singleMeteoBody .mois {
+        font-size: 10px;
+        line-height: 20px;
+        font-weight: 600;
+        padding-top: 13px;
+        height: 25px;
+      }
+  }

@@ -4,15 +4,16 @@ const express              = require('express');
 const router               = express.Router();
 const usersAdmin           = require('./useradminRoutes.js');
 const destination          = require('./destinationRoute.js');
-
-
-//const activities                         = require('./things_to_do.js');
-//const info                               = require('./info.js');
-//router.use('/pratique/info',    info);
+const thingtodoRouter      = require('./thingtodoRoute.js');
+const authMiddleware       = require('../middleware/auth.js');
 
 router.use('/destination',   destination);
+router.use('/profil',        usersAdmin);
+router.use('/thingtodo',     thingtodoRouter);
 
-router.use('/profil',      usersAdmin);
 
+router.get('/test-auth', authMiddleware, (req, res) => {
+    res.json({ message: "✅ Authenticated!", user: req.session.user });
+});
 
 module.exports = router;

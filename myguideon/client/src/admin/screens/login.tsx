@@ -130,6 +130,7 @@ const handleLogin = async (event: React.FormEvent): Promise<void> => {
     // Lire les données de la réponse
     const responseData = await response.json();
 
+
     if (responseData && responseData.message) {
       if(responseData.isfirstTime == 'yes'){
         setIsFirstTime(true);
@@ -137,6 +138,7 @@ const handleLogin = async (event: React.FormEvent): Promise<void> => {
         setShowForgotPassword(true);
       }else{
         localStorage.setItem("userId", responseData.message);
+        localStorage.setItem('token',   responseData.token);
         navigate("/admin"); 
       }
     } else {

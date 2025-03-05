@@ -1,7 +1,8 @@
 const  Destination                        = require('../../database/models/destinationModal');
 const { notifyTheAuthor, notifyAllAdmin } = require('../utils/notifications');
-
-
+const{v4:uuidv4} = require('uuid');
+const path   = require('path');
+const fs     = require('fs');
 
 
 
@@ -138,7 +139,87 @@ const destinationController = {
           console.error('Erreur lors de la récupération de la destination:', error);
           res.status(500).json({ message: "Erreur lors de la récupération de la destination." });
         }
+    },
+
+    async updateGallery(req, res) {
+      const destinationId = req.params.id;
+    
+      try {
+        // 📂 Définition des dossiers de stockage
+        const imgDir = path.join(__dirname, "../public/assets/img/gallery");
+        const videoDir = path.join(__dirname, "../public/assets/video/gallery");
+    
+        // 📌 Création des dossiers s'ils n'existent pas
+        if (!fs.existsSync(imgDir)) fs.mkdirSync(imgDir, { recursive: true });
+        if (!fs.existsSync(videoDir)) fs.mkdirSync(videoDir, { recursive: true });
+    
+        let { cover, deletedImages } = req.body;
+    
+        // 🔍 Récupérer la galerie actuelle depuis la base
+        const [rows] = await Destination.findDestinationGalleryById(destinationId);
+        let oldGallery = (rows.length > 0 && rows[0].gallery) ? JSON.parse(rows[0].gallery) : [];
+    
+        // 🗑️ Suppression des anciennes images
+        if (deletedImages) {
+          try {
+            const deletedList = JSON.parse(deletedImages);
+            if (!Array.isArray(deletedList)) {
+              throw new Error("deletedImages doit être un tableau.");
+            }
+    
+            oldGallery = oldGallery.filter((file) => !deletedList.includes(file));
+    
+            deletedList.forEach((filePath) => {
+              const fullPath = path.join(__dirname, `../${filePath}`);
+              if (fs.existsSync(fullPath)) {
+                fs.unlinkSync(fullPath);
+              }
+            });
+          } catch (err) {
+            console.error("❌ Erreur lors de la suppression des fichiers:", err);
+          }
+        }
+    
+        // 📥 Gestion des nouveaux fichiers uploadés
+        let newFiles = [];
+        if (req.files && Array.isArray(req.files)) {
+          newFiles = req.files.map((file) => {
+            const isVideo = file.mimetype.startsWith("video/");
+            const filePath = `/public/assets/${isVideo ? "video/gallery" : "img/gallery"}/${file.filename}`;
+    
+            // 🖼️ Met à jour la couverture si elle correspond à un fichier uploadé
+            if (cover === file.originalname) {
+              cover = filePath;
+            }
+            return filePath;
+          });
+        }
+    
+        // 🖼️ Mettre à jour la galerie avec les nouvelles images/vidéos
+        const updatedGallery = [...oldGallery, ...newFiles];
+    
+        // 📌 Met une image par défaut comme couverture si aucune n'est définie
+        if (!cover || cover.length === 0) {
+          cover = updatedGallery.length > 0 ? updatedGallery[0] : null;
+        }
+    
+        // 📂 Mise à jour dans la base de données
+        await Destination.setGalleryAndCover(JSON.stringify(updatedGallery), cover, destinationId);
+    
+        res.status(200).json({
+          message: "✅ Galerie mise à jour avec succès",
+          data: { galleryImages: updatedGallery, imageCover: cover },
+        });
+    
+      } catch (error) {
+        console.error("❌ Erreur lors de la mise à jour de la galerie:", error);
+        res.status(500).json({ message: "Erreur lors de la mise à jour de la galerie" });
+      }
     }
+    
+ 
+    
+
 };
 
 module.exports = destinationController;

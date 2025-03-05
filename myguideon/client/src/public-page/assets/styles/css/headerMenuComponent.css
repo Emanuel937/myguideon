@@ -89,12 +89,14 @@ nav {
 }
  input[name='search_destination']{
   
-    width: 450px;
+    max-width: 450px;
     height: 56px;
     padding: 20px;
     border-radius: 6px;
-    border:0.5px solid #97979771;
+    border: 0.5px solid #97979771;
     background-color: #FFFFFF;
+    width: auto;
+  
 
 }
 

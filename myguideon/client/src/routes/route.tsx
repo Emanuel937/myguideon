@@ -13,6 +13,7 @@ import IndexAdmin from '../admin/index';
 import PrivateRoute from './privateroute'; // Import PrivateRoute
 import Login from "../admin/screens/login";
 import SearchOnMap from '../public-page/screens/destination/search_map';
+import Testing from '../admin/screens/testing';
 
 const routes = [
   { path: '/', element: <HomePage /> },
@@ -25,6 +26,7 @@ const routes = [
   { path: '/destination/usefull-info/:id', element: <DestinationPraticalInformationPage /> },
   { path: '/destination/review/:id',       element: <DestinationReviewsPage /> },
   {path:  '/map/search/:id',               element:<SearchOnMap/>},
+  {path:  '/testing',                      element:<Testing/>},
    
   // Admin path
   { path: '/admin/login', element: <Login /> },

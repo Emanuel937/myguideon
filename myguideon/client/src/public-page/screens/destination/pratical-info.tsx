@@ -74,15 +74,44 @@ const Content = () => {
           <h3 className="pf-guide "> Guide pratique</h3>
           <h2 className="pf-big-title mb-5"> Organisez votre voyage</h2>
           <div className="pf-flex ">
-            <CardList/>
-            <CardList/>
-            <CardList/>
-            <CardList/>
-            <CardList/>
-            <CardList/>
-            <CardList/>
-            <CardList/>
-            <CardList/>
+            <CardList
+              icon='visa.png'
+              title='Formalités hh & visas'
+              description='Informations sur les visas, documents requis et démarches administratives.'
+            />
+            <CardList
+              icon='argent.png'
+              title='Argent & transactions locales'
+              description='Conseils sur les moyens de paiement et la gestion de votre budget.'
+            />
+            <CardList
+              icon='place.png'
+              title='Transports sur place'
+              description='Guide des différents moyens de transport disponibles localement.'
+            />
+              <CardList
+              icon='heart-sante.png'
+              title='Santé & sécurité'
+              description='Recommandations sanitaires et conseils de sécurité essentiels.'
+            />
+            <CardList
+              icon='culture-local.png'
+              title='Culture & coutumes locales'
+              description='Découvrez les traditions et les codes culturels à respecter.'
+            />
+            <CardList
+              icon='quartier.png'
+              title='Hébergement & quartiers'
+              description='Guide des différentes options d’hébergement et zones recommandées.'
+            />
+
+            <CardList
+              icon='ressource.png'
+              title='Communications & ressources'
+              description='Informations pratiques sur la connectivité et les outils utiles.'
+            />  
+
+
           </div>
         </Box>
 
@@ -91,14 +120,14 @@ const Content = () => {
 };
 
 
-const CardList = ()=>{
+const CardList = ({title, description, icon}:{title:string, description:string, icon:string})=>{
   return (
     <div className="pf-card">
       <div className="icon-bg">
-        <img src={'/assets/img/visa.png'} alt="card_icon"/>
+        <img src={`/assets/img/${icon}`} alt="card_icon"/>
       </div>
-      <h3 className="pf-h3"> Formalités administratives & visas</h3>
-      <p>Informations sur les visas, documents requis et démarches administratives.</p>
+      <h3 className="pf-h3">{title}</h3>
+      <p>{description}</p>
     </div>
   )
 }

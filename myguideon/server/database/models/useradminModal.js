@@ -193,7 +193,7 @@ class UserAdminModel extends AbstractModel {
    }
 
 
-   async deleteUser(id)
+   async deleteUser(id) 
    {
 
         const connection  =  await this.database.getConnection();
@@ -209,6 +209,7 @@ class UserAdminModel extends AbstractModel {
             connection.release();
         }
    }
+
 
 }
 
